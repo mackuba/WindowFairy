@@ -23,15 +23,24 @@
 }
 
 - (IBAction) switchButtonClicked: (id) sender {
-  
+  NSInteger row = [tableView selectedRow];
+  if (row >= 0) {
+    Window *windowRecord = [windowManager.windowList objectAtIndex: row];
+    AXUIElementPerformAction(windowRecord.accessibilityElement, kAXRaiseAction);
+    [windowManager reloadWindowList];
+    [tableView reloadData];
+    NSInteger newIndex = 0;
+    while ((newIndex < windowManager.windowList.count)
+      && ![((Window *) [windowManager.windowList objectAtIndex: newIndex]).name isEqualTo: windowRecord.name])
+      newIndex++;
+    if (newIndex < windowManager.windowList.count) {
+      [tableView selectRowIndexes: [NSIndexSet indexSetWithIndex: newIndex] byExtendingSelection: NO];
+    }
+  }
 }
 
 - (IBAction) refreshButtonClicked: (id) sender {
   [windowManager reloadWindowList];
-  NSLog(@"windows:");
-  for (Window *wnd in windowManager.windowList) {
-    NSLog(@"window \"%@\" of application %@ (%@)", wnd.name, wnd.application.name, wnd.application.pid);
-  }
   [tableView reloadData];
 }
 
