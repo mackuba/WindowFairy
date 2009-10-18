@@ -62,7 +62,9 @@
   
   NSLog(@"pids = %@", [pids componentsJoinedByString: @", "]);
 
-  for (NSNumber *pid in pids) {
+  //for (NSNumber *pid in pids) {
+  for (NSDictionary *dict in [[NSWorkspace sharedWorkspace] launchedApplications]) {
+    NSNumber *pid = [dict objectForKey: @"NSApplicationProcessIdentifier"];
     AXUIElementRef app = AXUIElementCreateApplication([pid intValue]);
     CFTypeRef value, value2;
     AXError result = AXUIElementCopyAttributeValue(app, kAXWindowsAttribute, &value);
@@ -73,8 +75,24 @@
     //NSLog(@"windows for %@(%@): %@", appName, pid, appWindowList);
     NSLog(@"windows for %@(%@):", appName, pid);
     // show iconForFile: for NSApplicationPath key from this hash
+
+    CFArrayRef attributes, attributes2;
+
+    //result = AXUIElementCopyAttributeNames(app, &attributes);
+    //NSLog(@"app attr names = %@", (NSArray *) attributes);
+
+    //result = AXUIElementCopyMultipleAttributeValues(app, attributes, 0, &attributes2);
+    //NSLog(@"app attr values = %@", (NSArray *) attributes2);
+
     for (id w in appWindowList) {
       AXUIElementRef wnd = (AXUIElementRef) w;
+
+      //result = AXUIElementCopyAttributeNames(w, &attributes);
+      //NSLog(@"window attr names = %@", (NSArray *) attributes);
+
+      //result = AXUIElementCopyMultipleAttributeValues(w, attributes, 0, &attributes2);
+      //NSLog(@"window attr values = %@", (NSArray *) attributes2);
+
       CFTypeRef v;
       AXError result3 = AXUIElementCopyAttributeValue(wnd, kAXMinimizedAttribute, &v);
       if (v && CFBooleanGetValue(v) == NO) {
