@@ -9,12 +9,11 @@
 @interface Application : NSObject {
   NSString *name;
   NSNumber *pid;
-  // NSImage *icon;
-  // NSString *bundleIdentifier;
-  // NSString *path;
+  NSImage *icon;
 }
 
 @property (copy) NSString *name;
 @property (retain) NSNumber *pid;
+@property (retain) NSImage *icon;
 
 @end

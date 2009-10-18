@@ -8,6 +8,6 @@
 
 @implementation Application
 
-@synthesize name, pid;
+@synthesize name, pid, icon;
 
 @end

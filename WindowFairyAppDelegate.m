@@ -37,7 +37,7 @@
   Window *windowRecord = [windowManager.windowList objectAtIndex: row];
   NSString *columnName = (NSString *) [column identifier];
   if ([columnName isEqualToString: @"Icon"]) {
-    return nil;
+    return windowRecord.application.icon;
   } else if ([columnName isEqualToString: @"AppName"]) {
     return windowRecord.application.name;
   } else {

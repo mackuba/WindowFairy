@@ -58,7 +58,8 @@
 
 - (NSArray *) getApplicationListAndStoreMapping: (NSDictionary **) mapping {
   // get a list of dictionaries for each launched application
-  NSArray *applicationHash = [[NSWorkspace sharedWorkspace] launchedApplications];
+  NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
+  NSArray *applicationHash = [workspace launchedApplications];
 
   // create an array of Application records based on the dictionaries
   NSMutableArray *applications = [[NSMutableArray alloc] init];
@@ -67,6 +68,7 @@
     Application *application = [[Application alloc] init];
     application.pid = [info objectForKey: @"NSApplicationProcessIdentifier"];
     application.name = [info objectForKey: @"NSApplicationName"];
+    application.icon = [workspace iconForFile: [info objectForKey: @"NSApplicationPath"]];
     [applications addObject: application];
     [pidMapping setObject: application forKey: application.pid];
   }
