@@ -23,13 +23,8 @@
   // collect the data we will need
   NSDictionary *pidToApplicationMapping;
   NSArray *applicationList = [self getApplicationListAndStoreMapping: &pidToApplicationMapping];
-  NSLog(@"applicationList = ", applicationList);
-  for (Application *app in applicationList) { NSLog(@"app %@ (%@)", app.name, app.pid); }
-  NSLog(@"mapping = %@", pidToApplicationMapping);
   NSArray *cgWindowList = [self getCGWindowList];
-  NSLog(@"cgWindowList = %@", cgWindowList);
   NSDictionary *accessibilityWindowsForApps = [self getAccessibilityWindowDataForApplications: applicationList];
-  NSLog(@"accessibilityWindowsForApps = %@", accessibilityWindowsForApps);
   NSMutableDictionary *windowIndexes = [[NSMutableDictionary alloc] init];
   NSMutableArray *windows = [[NSMutableArray alloc] init];
 
@@ -112,39 +107,32 @@
 - (NSDictionary *) getAccessibilityWindowDataForApplications: (NSArray *) applications {
   // create a dictionary mapping each Application to a list of AXUIElement records of all its windows
   NSMutableDictionary *windowLists = [[NSMutableDictionary alloc] init];
+  
   for (Application *application in applications) {
     AXUIElementRef applicationElement = AXUIElementCreateApplication([application.pid intValue]);
     CFTypeRef value;
-    AXError result = AXUIElementCopyAttributeValue(applicationElement, kAXWindowsAttribute, &value);
-    if (result == kAXErrorSuccess) {
-      
-      CFArrayRef attributes, values;
-      result = AXUIElementCopyAttributeNames(applicationElement, &attributes);
-      NSLog(@"app attr names = %@", [(NSArray *) attributes componentsJoinedByString: @", "]);
-      result = AXUIElementCopyMultipleAttributeValues(applicationElement, attributes, 0, &values);
-      NSLog(@"app attr values = %@", [(NSArray *) values componentsJoinedByString: @", "]);
-      
-      CFArrayRef applicationWindows = (CFArrayRef) value;
-      NSInteger windowCount = CFArrayGetCount(applicationWindows);
+    AXError result = AXUIElementCopyAttributeValue(applicationElement, kAXHiddenAttribute, &value);
+    
+    // filter out applications which are hidden
+    if (result == kAXErrorSuccess && CFBooleanGetValue(value) == NO) {
+      result = AXUIElementCopyAttributeValue(applicationElement, kAXWindowsAttribute, &value);
+      if (result == kAXErrorSuccess) {
+        CFArrayRef applicationWindows = (CFArrayRef) value;
+        NSInteger windowCount = CFArrayGetCount(applicationWindows);
 
-      // filter out fake window records and minimized windows (minimized attribute is null or true)
-      CFMutableArrayRef visibleWindows = CFArrayCreateMutable(NULL, windowCount, NULL);
-      for (NSInteger i = 0; i < windowCount; i++) {
-        AXUIElementRef windowElement = CFArrayGetValueAtIndex(applicationWindows, i);
+        // filter out fake window records and minimized windows (minimized attribute is null or true)
+        CFMutableArrayRef visibleWindows = CFArrayCreateMutable(NULL, windowCount, NULL);
+        for (NSInteger i = 0; i < windowCount; i++) {
+          AXUIElementRef windowElement = CFArrayGetValueAtIndex(applicationWindows, i);
 
-        result = AXUIElementCopyAttributeNames(windowElement, &attributes);
-        NSLog(@"window attr names = %@", [(NSArray *) attributes componentsJoinedByString: @", "]);
-        result = AXUIElementCopyMultipleAttributeValues(windowElement, attributes, 0, &values);
-        NSLog(@"window attr values = %@", [(NSArray *) values componentsJoinedByString: @", "]);
-
-
-        result = AXUIElementCopyAttributeValue(windowElement, kAXMinimizedAttribute, &value);
-        if (value && CFBooleanGetValue(value) == NO) {
-          CFArrayAppendValue(visibleWindows, windowElement);
+          result = AXUIElementCopyAttributeValue(windowElement, kAXMinimizedAttribute, &value);
+          if (value && CFBooleanGetValue(value) == NO) {
+            CFArrayAppendValue(visibleWindows, windowElement);
+          }
         }
-      }
 
-      [windowLists setObject: (NSArray *) visibleWindows forKey: application.pid];
+        [windowLists setObject: (NSArray *) visibleWindows forKey: application.pid];
+      }
     }
   }
 
