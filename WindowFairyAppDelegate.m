@@ -12,7 +12,7 @@
 
 @implementation WindowFairyAppDelegate
 
-@synthesize window, windowManager;
+@synthesize window, windowManager, tableView;
 
 - (void) awakeFromNib {
   [windowManager reloadWindowList];
@@ -26,8 +26,16 @@
   
 }
 
+- (IBAction) refreshButtonClicked: (id) sender {
+  [windowManager reloadWindowList];
+  NSLog(@"windows:");
+  for (Window *wnd in windowManager.windowList) {
+    NSLog(@"window \"%@\" of application %@ (%@)", wnd.name, wnd.application.name, wnd.application.pid);
+  }
+  [tableView reloadData];
+}
+
 - (NSInteger) numberOfRowsInTableView: (NSTableView *) view {
-  NSLog(@"count = %d", windowManager.windowList.count);
   return windowManager.windowList.count;
 }
 
