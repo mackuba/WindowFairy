@@ -66,6 +66,10 @@
   for (NSDictionary *info in applicationHash) {
     Application *application = [[Application alloc] init];
     application.pid = [info objectForKey: @"NSApplicationProcessIdentifier"];
+    if ([application.pid intValue] == [[NSProcessInfo processInfo] processIdentifier]) {
+      // don't show WindowFairy in the list
+      continue;
+    }
     application.name = [info objectForKey: @"NSApplicationName"];
     application.icon = [workspace iconForFile: [info objectForKey: @"NSApplicationPath"]];
     [applications addObject: application];
@@ -112,7 +116,7 @@
   AXUIElementRef applicationElement;
   AXError result;
   CFTypeRef value;
-  
+
   for (Application *application in applications) {
     applicationElement = AXUIElementCreateApplication([application.pid intValue]);
     result = AXUIElementCopyAttributeValue(applicationElement, kAXHiddenAttribute, &value);
