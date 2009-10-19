@@ -18,8 +18,6 @@
 
 @implementation WindowManager
 
-@synthesize windowList;
-
 - (void) reloadWindowList {
   // collect the data we will need
   NSDictionary *pidToApplicationMapping;
@@ -39,7 +37,7 @@
     if (application) {
       // get a matching accessibility API entry
       NSNumber *index = [windowIndexes objectForKey: applicationPid];
-      NSInteger position = (index) ? [index intValue] : 0;
+      NSInteger position = index ? [index intValue] : 0;
       CFArrayRef applicationWindows = (CFArrayRef) [accessibilityWindowsForApps objectForKey: applicationPid];
       AXUIElementRef windowElement = (AXUIElementRef) CFArrayGetValueAtIndex(applicationWindows, position);
 
@@ -54,7 +52,7 @@
     }
   }
 
-  self.windowList = windows;
+  windowList = windows;
 }
 
 - (NSArray *) getApplicationListAndStoreMapping: (NSDictionary **) mapping {
@@ -110,11 +108,14 @@
 - (NSDictionary *) getAccessibilityWindowDataForApplications: (NSArray *) applications {
   // create a dictionary mapping each Application to a list of AXUIElement records of all its windows
   NSMutableDictionary *windowLists = [[NSMutableDictionary alloc] init];
+
+  AXUIElementRef applicationElement;
+  AXError result;
+  CFTypeRef value;
   
   for (Application *application in applications) {
-    AXUIElementRef applicationElement = AXUIElementCreateApplication([application.pid intValue]);
-    CFTypeRef value;
-    AXError result = AXUIElementCopyAttributeValue(applicationElement, kAXHiddenAttribute, &value);
+    applicationElement = AXUIElementCreateApplication([application.pid intValue]);
+    result = AXUIElementCopyAttributeValue(applicationElement, kAXHiddenAttribute, &value);
     
     // filter out applications which are hidden
     if (result == kAXErrorSuccess && CFBooleanGetValue(value) == NO) {
@@ -129,7 +130,7 @@
           AXUIElementRef windowElement = CFArrayGetValueAtIndex(applicationWindows, i);
 
           result = AXUIElementCopyAttributeValue(windowElement, kAXMinimizedAttribute, &value);
-          if (value && CFBooleanGetValue(value) == NO) {
+          if (result == kAXErrorSuccess && value && CFBooleanGetValue(value) == NO) {
             CFArrayAppendValue(visibleWindows, windowElement);
           }
         }
@@ -140,6 +141,18 @@
   }
 
   return windowLists;
+}
+
+- (void) switchToWindow: (Window *) window {
+  AXUIElementPerformAction(window.accessibilityElement, kAXRaiseAction);
+}
+
+- (Window *) windowAtIndex: (NSInteger) index {
+  return (Window *) [windowList objectAtIndex: index];
+}
+
+- (NSInteger) windowCount {
+  return windowList.count;
 }
 
 @end

@@ -12,8 +12,9 @@
 }
 
 - (void) reloadWindowList;
-// - (void) switchToWindowAtIndex: (NSInteger) index;
+- (void) switchToWindow: (Window *) window;
+- (Window *) windowAtIndex: (NSInteger) index;
 
-@property (retain) NSArray *windowList;
+@property (readonly) NSInteger windowCount;
 
 @end

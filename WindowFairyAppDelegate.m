@@ -5,11 +5,14 @@
 // Licensed under GPL v3 license
 // -------------------------------------------------------
 
+#import "Application.h"
+#import "Window.h"
 #import "WindowFairyAppDelegate.h"
 #import "WindowManager.h"
 
-#import "Window.h"
-#import "Application.h"
+@interface WindowFairyAppDelegate ()
+- (void) reloadView;
+@end
 
 @implementation WindowFairyAppDelegate
 
@@ -17,42 +20,47 @@
 
 - (void) awakeFromNib {
   [windowManager reloadWindowList];
-  NSLog(@"windows:");
-  for (Window *wnd in windowManager.windowList) {
-    NSLog(@"window \"%@\" of application %@ (%@)", wnd.name, wnd.application.name, wnd.application.pid);
-  }
 }
 
 - (IBAction) switchButtonClicked: (id) sender {
   NSInteger row = [tableView selectedRow];
   if (row >= 0) {
-    Window *windowRecord = [windowManager.windowList objectAtIndex: row];
-    AXUIElementPerformAction(windowRecord.accessibilityElement, kAXRaiseAction);
-    [windowManager reloadWindowList];
-    [tableView reloadData];
+    // bring selected window to front
+    Window *selectedWindow = [windowManager windowAtIndex: row];
+    [windowManager switchToWindow: selectedWindow];
+
+    // refresh the list and reselect the window in new position
+    [self reloadView];
     NSInteger newIndex = 0;
-    while ((newIndex < windowManager.windowList.count)
-      && ![((Window *) [windowManager.windowList objectAtIndex: newIndex]).name isEqualTo: windowRecord.name])
+    NSInteger windowCount = windowManager.windowCount;
+    while (newIndex < windowCount) {
+      Window *w = (Window *) [windowManager windowAtIndex: newIndex];
+      if ([w.name isEqualToString: selectedWindow.name]) {
+        [tableView selectRowIndexes: [NSIndexSet indexSetWithIndex: newIndex] byExtendingSelection: NO];
+        break;
+      }
       newIndex++;
-    if (newIndex < windowManager.windowList.count) {
-      [tableView selectRowIndexes: [NSIndexSet indexSetWithIndex: newIndex] byExtendingSelection: NO];
     }
   }
 }
 
 - (IBAction) refreshButtonClicked: (id) sender {
+  [self reloadView];
+}
+
+- (void) reloadView {
   [windowManager reloadWindowList];
   [tableView reloadData];
 }
 
 - (NSInteger) numberOfRowsInTableView: (NSTableView *) view {
-  return windowManager.windowList.count;
+  return windowManager.windowCount;
 }
 
 - (id) tableView: (NSTableView *) view
        objectValueForTableColumn: (NSTableColumn *) column
        row: (NSInteger) row {
-  Window *windowRecord = [windowManager.windowList objectAtIndex: row];
+  Window *windowRecord = [windowManager windowAtIndex: row];
   NSString *columnName = (NSString *) [column identifier];
   if ([columnName isEqualToString: @"Icon"]) {
     return windowRecord.application.icon;
