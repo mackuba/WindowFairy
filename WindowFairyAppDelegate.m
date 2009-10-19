@@ -2,6 +2,7 @@
 // WindowFairyAppDelegate.m
 //
 // Copyright (c) 2009 Jakub Suder <jakub.suder@gmail.com>
+// Licensed under GPL v3 license
 // -------------------------------------------------------
 
 #import "WindowFairyAppDelegate.h"
