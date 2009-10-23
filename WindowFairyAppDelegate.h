@@ -10,7 +10,7 @@
 @class WindowManager;
 
 @interface WindowFairyAppDelegate : NSObject <NSApplicationDelegate> {
-  NSWindow *window;
+  NSView *view;
   NSTableView *tableView;
   WindowManager *windowManager;
 }
@@ -18,7 +18,7 @@
 - (IBAction) switchButtonClicked: (id) sender;
 - (IBAction) refreshButtonClicked: (id) sender;
 
-@property IBOutlet NSWindow *window;
+@property IBOutlet NSView *view;
 @property IBOutlet WindowManager *windowManager;
 @property IBOutlet NSTableView *tableView;
 

@@ -6,6 +6,7 @@
 // -------------------------------------------------------
 
 #import "Application.h"
+#import "SelectionWindow.h"
 #import "Window.h"
 #import "WindowFairyAppDelegate.h"
 #import "WindowManager.h"
@@ -16,10 +17,12 @@
 
 @implementation WindowFairyAppDelegate
 
-@synthesize window, windowManager, tableView;
+@synthesize view, windowManager, tableView;
 
 - (void) awakeFromNib {
-  [windowManager reloadWindowList];
+  [self reloadView];
+  SelectionWindow *window = [[SelectionWindow alloc] initWithView: view];
+  [window makeKeyAndOrderFront: nil];
 }
 
 - (IBAction) switchButtonClicked: (id) sender {
