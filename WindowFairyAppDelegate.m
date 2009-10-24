@@ -25,11 +25,12 @@
 - (void) reloadView;
 - (void) installGlobalHotKey;
 - (void) showSelectionWindow;
+- (void) moveCursorToRow: (NSInteger) row;
 @end
 
 
 OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *data) {
-  [[NSApp delegate] showSelectionWindow];
+  [[NSApp delegate] hotKeyActivated];
   return noErr;
 }
 
@@ -56,49 +57,60 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
     GetApplicationEventTarget(), 0, &hotKeyRef);
 }
 
+// TODO: use CoreAnimation fade-in and fade-out to show and hide the window
+
 - (void) showSelectionWindow {
-  [self reloadView];
   if (!window) {
+    [NSApp activateIgnoringOtherApps: YES]; // TODO: prevent WF from showing up in the top menu
     window = [[SelectionWindow alloc] initWithView: view];
+    [self reloadView];
+    [self moveCursorToRow: 0];
     [window makeKeyAndOrderFront: nil];
+    [window makeFirstResponder: [window contentView]];
   }
 }
 
 - (void) hideSelectionWindow {
   if (window) {
-    [window orderOut: nil];
+    [window close];
     window = nil;
   }
 }
 
-- (IBAction) cancelButtonClicked: (id) sender {
+- (void) hotKeyActivated {
+  if (!window) {
+    [self showSelectionWindow];
+  }
+  [self moveCursorDown];
+}
+
+// TODO: handle "no windows" situation
+
+- (void) moveCursorToRow: (NSInteger) row {
+  [tableView selectRowIndexes: [NSIndexSet indexSetWithIndex: row] byExtendingSelection: NO];
+}
+
+- (void) moveCursorDown {
+  NSInteger currentRow = [tableView selectedRow];
+  currentRow = (currentRow + 1) % windowManager.windowCount;
+  [self moveCursorToRow: currentRow];
+}
+
+- (void) moveCursorUp {
+  NSInteger currentRow = [tableView selectedRow];
+  currentRow = (currentRow - 1) % windowManager.windowCount;
+  [self moveCursorToRow: currentRow];
+}
+
+- (void) performSwitch {
+  NSInteger row = [tableView selectedRow];
+  [windowManager switchToWindowAtIndex: MAX(row, 0)];
   [self hideSelectionWindow];
 }
 
-- (IBAction) switchButtonClicked: (id) sender {
-  NSInteger row = [tableView selectedRow];
-  if (row >= 0) {
-    // bring selected window to front
-    Window *selectedWindow = [windowManager windowAtIndex: row];
-    [windowManager switchToWindow: selectedWindow];
-
-    // refresh the list and reselect the window in new position
-    [self reloadView];
-    NSInteger newIndex = 0;
-    NSInteger windowCount = windowManager.windowCount;
-    while (newIndex < windowCount) {
-      Window *w = (Window *) [windowManager windowAtIndex: newIndex];
-      if ([w.name isEqualToString: selectedWindow.name]) {
-        [tableView selectRowIndexes: [NSIndexSet indexSetWithIndex: newIndex] byExtendingSelection: NO];
-        break;
-      }
-      newIndex++;
-    }
-  }
-}
-
-- (IBAction) refreshButtonClicked: (id) sender {
-  [self reloadView];
+- (void) closeWithoutSwitching {
+  [windowManager switchToWindowAtIndex: 0];
+  [self hideSelectionWindow];
 }
 
 - (void) reloadView {

@@ -95,6 +95,8 @@
   for (NSInteger i = 0; i < windowCount; i++) {
     CFDictionaryRef info = CFArrayGetValueAtIndex(windowInfoArray, i);
 
+    // TODO: still some fake windows get through (Skype emoticons, duplicate Preview pdf)
+
     // filter out fake entries (system tray icons, menu, dock, window drawers, etc.)
     if (CFDictionaryGetValue(info, kCGWindowWorkspace) && CFDictionaryGetValue(info, kCGWindowName)) {
       NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
@@ -147,12 +149,17 @@
   return windowLists;
 }
 
-- (void) switchToWindow: (Window *) window {
+- (void) switchToWindowAtIndex: (NSInteger) index {
+  Window *window = [windowList objectAtIndex: index];
   AXUIElementPerformAction(window.accessibilityElement, kAXRaiseAction);
+
+  ProcessSerialNumber process;
+  GetProcessForPID([window.application.pid intValue], &process);
+  SetFrontProcessWithOptions(&process, kSetFrontProcessFrontWindowOnly);
 }
 
 - (Window *) windowAtIndex: (NSInteger) index {
-  return (Window *) [windowList objectAtIndex: index];
+  return [windowList objectAtIndex: index];
 }
 
 - (NSInteger) windowCount {

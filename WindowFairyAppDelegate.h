@@ -16,9 +16,11 @@
   SelectionWindow *window;
 }
 
-- (IBAction) switchButtonClicked: (id) sender;
-- (IBAction) refreshButtonClicked: (id) sender;
-- (IBAction) cancelButtonClicked: (id) sender;
+- (void) performSwitch;
+- (void) closeWithoutSwitching;
+- (void) moveCursorUp;
+- (void) moveCursorDown;
+- (void) hotKeyActivated;
 
 @property IBOutlet NSView *view;
 @property IBOutlet WindowManager *windowManager;
