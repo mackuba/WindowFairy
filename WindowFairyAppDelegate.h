@@ -13,10 +13,12 @@
   NSView *view;
   NSTableView *tableView;
   WindowManager *windowManager;
+  SelectionWindow *window;
 }
 
 - (IBAction) switchButtonClicked: (id) sender;
 - (IBAction) refreshButtonClicked: (id) sender;
+- (IBAction) cancelButtonClicked: (id) sender;
 
 @property IBOutlet NSView *view;
 @property IBOutlet WindowManager *windowManager;

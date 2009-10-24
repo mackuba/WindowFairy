@@ -5,24 +5,74 @@
 // Licensed under GPL v3 license
 // -------------------------------------------------------
 
+// CARBON ALERT! BATTLESTATIONS! ;)
+#import <Carbon/Carbon.h>
+
 #import "Application.h"
 #import "SelectionWindow.h"
 #import "Window.h"
 #import "WindowFairyAppDelegate.h"
 #import "WindowManager.h"
 
+#define SHOW_WINDOW_HOTKEY_ID         1
+#define SHOW_WINDOW_HOTKEY_NAME       'show'
+#define SHOW_WINDOW_HOTKEY_CODE       48   // tab
+#define SHOW_WINDOW_HOTKEY_MODIFIERS  optionKey
+
+
+
 @interface WindowFairyAppDelegate ()
 - (void) reloadView;
+- (void) installGlobalHotKey;
+- (void) showSelectionWindow;
 @end
+
+
+OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *data) {
+  [[NSApp delegate] showSelectionWindow];
+  return noErr;
+}
+
 
 @implementation WindowFairyAppDelegate
 
 @synthesize view, windowManager, tableView;
 
 - (void) awakeFromNib {
+  [self installGlobalHotKey];
+}
+
+- (void) installGlobalHotKey {
+  EventTypeSpec eventType;
+  eventType.eventClass = kEventClassKeyboard;
+  eventType.eventKind = kEventHotKeyPressed;
+  InstallApplicationEventHandler(&keyboardHandler, 1, &eventType, NULL, NULL);
+
+  EventHotKeyRef hotKeyRef;
+  EventHotKeyID hotKeyID;
+  hotKeyID.signature = SHOW_WINDOW_HOTKEY_NAME;
+  hotKeyID.id = SHOW_WINDOW_HOTKEY_ID;
+  RegisterEventHotKey(SHOW_WINDOW_HOTKEY_CODE, SHOW_WINDOW_HOTKEY_MODIFIERS, hotKeyID,
+    GetApplicationEventTarget(), 0, &hotKeyRef);
+}
+
+- (void) showSelectionWindow {
   [self reloadView];
-  SelectionWindow *window = [[SelectionWindow alloc] initWithView: view];
-  [window makeKeyAndOrderFront: nil];
+  if (!window) {
+    window = [[SelectionWindow alloc] initWithView: view];
+    [window makeKeyAndOrderFront: nil];
+  }
+}
+
+- (void) hideSelectionWindow {
+  if (window) {
+    [window orderOut: nil];
+    window = nil;
+  }
+}
+
+- (IBAction) cancelButtonClicked: (id) sender {
+  [self hideSelectionWindow];
 }
 
 - (IBAction) switchButtonClicked: (id) sender {

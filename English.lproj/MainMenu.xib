@@ -1295,6 +1295,30 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
+					<object class="NSButton" id="32011805">
+						<reference key="NSNextResponder" ref="825881127"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{205, 12}, {88, 36}}</string>
+						<reference key="NSSuperview" ref="825881127"/>
+						<bool key="NSEnabled">YES</bool>
+						<object class="NSButtonCell" key="NSCell" id="808517184">
+							<int key="NSCellFlags">67239424</int>
+							<int key="NSCellFlags2">134217728</int>
+							<string key="NSContents">Cancel</string>
+							<object class="NSFont" key="NSSupport" id="323998352">
+								<string key="NSName">LucidaGrande</string>
+								<double key="NSSize">13</double>
+								<int key="NSfFlags">1044</int>
+							</object>
+							<reference key="NSControlView" ref="32011805"/>
+							<int key="NSButtonFlags">-2038284033</int>
+							<int key="NSButtonFlags2">134</int>
+							<string key="NSAlternateContents"/>
+							<string key="NSKeyEquivalent"/>
+							<int key="NSPeriodicDelay">200</int>
+							<int key="NSPeriodicInterval">25</int>
+						</object>
+					</object>
 					<object class="NSButton" id="286200037">
 						<reference key="NSNextResponder" ref="825881127"/>
 						<int key="NSvFlags">292</int>
@@ -1305,11 +1329,7 @@
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">134217728</int>
 							<string key="NSContents">Refresh</string>
-							<object class="NSFont" key="NSSupport" id="323998352">
-								<string key="NSName">LucidaGrande</string>
-								<double key="NSSize">13</double>
-								<int key="NSfFlags">1044</int>
-							</object>
+							<reference key="NSSupport" ref="323998352"/>
 							<reference key="NSControlView" ref="286200037"/>
 							<int key="NSButtonFlags">-2038284033</int>
 							<int key="NSButtonFlags2">134</int>
@@ -1463,7 +1483,6 @@
 													<string key="NSContents">Text Cell</string>
 													<reference key="NSSupport" ref="834510834"/>
 													<reference key="NSControlView" ref="999583306"/>
-													<bool key="NSDrawsBackground">YES</bool>
 													<object class="NSColor" key="NSBackgroundColor">
 														<int key="NSColorSpace">4</int>
 														<bytes key="NSWhite">MSAwAA</bytes>
@@ -2262,6 +2281,14 @@
 						<reference key="destination" ref="825881127"/>
 					</object>
 					<int key="connectionID">562</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">cancelButtonClicked:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="32011805"/>
+					</object>
+					<int key="connectionID">568</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3261,6 +3288,7 @@
 							<reference ref="509493456"/>
 							<reference ref="286200037"/>
 							<reference ref="845271333"/>
+							<reference ref="32011805"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -3358,6 +3386,19 @@
 						<int key="objectID">553</int>
 						<reference key="object" ref="876909732"/>
 						<reference key="parent" ref="286200037"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">565</int>
+						<reference key="object" ref="32011805"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="808517184"/>
+						</array>
+						<reference key="parent" ref="825881127"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">566</int>
+						<reference key="object" ref="808517184"/>
+						<reference key="parent" ref="32011805"/>
 					</object>
 				</array>
 			</object>
@@ -3589,6 +3630,8 @@
 				<integer value="1" key="56.ImportedFromIB2"/>
 				<string key="561.IBEditorWindowLastContentRect">{{525, 216}, {652, 384}}</string>
 				<string key="561.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="565.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="566.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="57.IBEditorWindowLastContentRect">{{286, 129}, {275, 183}}</string>
 				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<integer value="1" key="57.ImportedFromIB2"/>
@@ -3626,7 +3669,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">564</int>
+			<int key="maxID">568</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3634,6 +3677,7 @@
 					<string key="className">WindowFairyAppDelegate</string>
 					<string key="superclassName">NSObject</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="cancelButtonClicked:">id</string>
 						<string key="refreshButtonClicked:">id</string>
 						<string key="switchButtonClicked:">id</string>
 					</dictionary>
@@ -4204,7 +4248,7 @@
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<integer value="1060" key="NS.object.0"/>
+			<integer value="1050" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>
