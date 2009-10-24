@@ -237,7 +237,7 @@
 				INFOPLIST_FILE = "WindowFairy-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = WindowFairy;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -253,7 +253,7 @@
 				INFOPLIST_FILE = "WindowFairy-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = WindowFairy;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};

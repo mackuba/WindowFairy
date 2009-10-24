@@ -9,7 +9,7 @@
 
 @class WindowManager;
 
-@interface WindowFairyAppDelegate : NSObject <NSApplicationDelegate> {
+@interface WindowFairyAppDelegate : NSObject {
   NSView *view;
   NSTableView *tableView;
   WindowManager *windowManager;
