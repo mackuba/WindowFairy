@@ -61,7 +61,7 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
 
 - (void) showSelectionWindow {
   if (!window) {
-    [NSApp activateIgnoringOtherApps: YES]; // TODO: prevent WF from showing up in the top menu
+    [NSApp activateIgnoringOtherApps: YES];
     window = [[SelectionWindow alloc] initWithView: view];
     [self reloadView];
     [self moveCursorToRow: 0];
