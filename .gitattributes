@@ -1,3 +1,0 @@
-*.pbxproj -crlf -diff -merge
-*.pbxuser -crlf -diff -merge
-*.*v3 -crlf -diff -merge
