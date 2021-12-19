@@ -38,7 +38,7 @@
       // get a matching accessibility API entry
       NSNumber *index = [windowIndexes objectForKey: applicationPid];
       NSInteger position = index ? [index intValue] : 0;
-      CFArrayRef applicationWindows = (CFArrayRef) [accessibilityWindowsForApps objectForKey: applicationPid];
+      CFArrayRef applicationWindows = (__bridge CFArrayRef) [accessibilityWindowsForApps objectForKey: applicationPid];
       AXUIElementRef windowElement = (AXUIElementRef) CFArrayGetValueAtIndex(applicationWindows, position);
 
       // create a Window object
@@ -141,7 +141,7 @@
           }
         }
 
-        [windowLists setObject: (NSArray *) visibleWindows forKey: application.pid];
+        [windowLists setObject: (NSArray *) CFBridgingRelease(visibleWindows) forKey: application.pid];
       }
     }
   }

@@ -14,7 +14,7 @@
 }
 
 @property (copy) NSString *name;
-@property (retain) NSNumber *pid;
-@property (retain) NSImage *icon;
+@property (strong) NSNumber *pid;
+@property (strong) NSImage *icon;
 
 @end
