@@ -91,12 +91,16 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
 }
 
 - (void) moveCursorDown {
+  if (windowManager.windowCount == 0) { return; }
+
   NSInteger currentRow = [tableView selectedRow];
   currentRow = (currentRow + 1) % windowManager.windowCount;
   [self moveCursorToRow: currentRow];
 }
 
 - (void) moveCursorUp {
+  if (windowManager.windowCount == 0) { return; }
+
   NSInteger currentRow = [tableView selectedRow];
   currentRow = (currentRow - 1) % windowManager.windowCount;
   [self moveCursorToRow: currentRow];
@@ -104,7 +108,11 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
 
 - (void) performSwitch {
   NSInteger row = [tableView selectedRow];
-  [windowManager switchToWindowAtIndex: MAX(row, 0)];
+
+  if (row > -1) {
+    [windowManager switchToWindowAtIndex: MAX(row, 0)];
+  }
+
   [self hideSelectionWindow];
 }
 
