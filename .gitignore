@@ -1,6 +1,3 @@
-build
-*.tm_build_errors
-*.xcodeproj/*.pbxuser
-*.xcodeproj/*.perspective*
-*.xcodeproj/*.mode1v3
-._*
+*.xccheckout
+*.xcuserdatad
+.DS_Store
