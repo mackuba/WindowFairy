@@ -20,6 +20,7 @@
     [self setBackgroundColor: [NSColor colorWithDeviceRed: 0 green: 0 blue: 0 alpha: 0.7]];
     [self setOpaque: NO];
     [self setContentView: view];
+    [self setReleasedWhenClosed: NO];
   }
   return self;
 }
