@@ -39,14 +39,16 @@
       NSNumber *index = [windowIndexes objectForKey: applicationPid];
       NSInteger position = index ? [index intValue] : 0;
       CFArrayRef applicationWindows = (__bridge CFArrayRef) [accessibilityWindowsForApps objectForKey: applicationPid];
-      AXUIElementRef windowElement = (AXUIElementRef) CFArrayGetValueAtIndex(applicationWindows, position);
 
       // create a Window object
       Window *window = [[Window alloc] init];
       window.name = [cgWindowHash objectForKey: @"name"];
       window.application = application;
-      window.accessibilityElement = windowElement;
-      
+
+      if (applicationWindows) {
+        window.accessibilityElement = (AXUIElementRef) CFArrayGetValueAtIndex(applicationWindows, position);
+      }
+
       [windows addObject: window];
       [windowIndexes setObject: [NSNumber numberWithInt: (position + 1)] forKey: applicationPid];
     }
@@ -138,11 +140,24 @@
           result = AXUIElementCopyAttributeValue(windowElement, kAXMinimizedAttribute, &value);
           if (result == kAXErrorSuccess && value && CFBooleanGetValue(value) == NO) {
             CFArrayAppendValue(visibleWindows, windowElement);
+          } else {
+            NSLog(@"Error loading application info (minimized): %d", result);
           }
         }
 
         [windowLists setObject: (NSArray *) CFBridgingRelease(visibleWindows) forKey: application.pid];
+      } else {
+        NSLog(@"Error loading application info (hidden): %d", result);
       }
+    } else if (result == kAXErrorAPIDisabled) {
+      NSRunAlertPanel(@"Error",
+                      @"Accessibility access needs to be enabled for this app in System Preferences.",
+                      @"OK",
+                      nil,
+                      nil);
+      return nil;
+    } else {
+      NSLog(@"Error loading application info (windows): %d", result);
     }
   }
 
@@ -151,7 +166,12 @@
 
 - (void) switchToWindowAtIndex: (NSInteger) index {
   Window *window = [windowList objectAtIndex: index];
-  AXUIElementPerformAction(window.accessibilityElement, kAXRaiseAction);
+
+  if (window.accessibilityElement) {
+    AXUIElementPerformAction(window.accessibilityElement, kAXRaiseAction);
+  } else {
+    NSLog(@"Can't switch to window %@, no AX element set", window.name);
+  }
 
   ProcessSerialNumber process;
   GetProcessForPID([window.application.pid intValue], &process);
