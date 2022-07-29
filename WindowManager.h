@@ -2,7 +2,7 @@
 // WindowManager.h
 //
 // Copyright (c) 2009 Jakub Suder <jakub.suder@gmail.com>
-// Licensed under GPL v3 license
+// Licensed under WTFPL license
 // -------------------------------------------------------
 
 #import <Foundation/Foundation.h>
