@@ -100,7 +100,7 @@
     // TODO: still some fake windows get through (Skype emoticons, duplicate Preview pdf)
 
     // filter out fake entries (system tray icons, menu, dock, window drawers, etc.)
-    if (CFDictionaryGetValue(info, kCGWindowWorkspace) && CFDictionaryGetValue(info, kCGWindowName)) {
+    if (CFDictionaryGetValue(info, kCGWindowName)) {
       NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
       NSNumber *applicationPid = (NSNumber *) CFDictionaryGetValue(info, kCGWindowOwnerPID);
       NSDictionary *windowInfo = [NSDictionary dictionaryWithObjectsAndKeys: windowName, @"name",
