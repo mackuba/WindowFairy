@@ -81,8 +81,9 @@
     CFDictionaryRef info = CFArrayGetValueAtIndex(windowInfoArray, i);
 
     NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
+    NSNumber *windowLayer = (NSNumber *) CFDictionaryGetValue(info, kCGWindowLayer);
 
-    if (windowName && windowName.length > 0 && ![windowName isEqualToString:@"Dock"]) {
+    if (windowName && windowName.length > 0 && [windowLayer integerValue] == NSNormalWindowLevel) {
       NSNumber *applicationPid = (NSNumber *) CFDictionaryGetValue(info, kCGWindowOwnerPID);
       WindowCGInfo *windowInfo = [[WindowCGInfo alloc] initWithName:windowName pid:applicationPid];
 
