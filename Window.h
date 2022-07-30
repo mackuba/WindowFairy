@@ -7,16 +7,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class Application;
-
 @interface Window : NSObject {
   NSString *name;
-  Application *application;
+  NSRunningApplication *application;
   AXUIElementRef accessibilityElement;
 }
 
 @property (copy) NSString *name;
-@property Application *application;
+@property NSRunningApplication *application;
 @property AXUIElementRef accessibilityElement;
 
 @end

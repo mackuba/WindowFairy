@@ -8,7 +8,6 @@
 // CARBON ALERT! BATTLESTATIONS! ;)
 #import <Carbon/Carbon.h>
 
-#import "Application.h"
 #import "SelectionWindow.h"
 #import "Window.h"
 #import "WindowFairyAppDelegate.h"
@@ -138,7 +137,7 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
   if ([columnName isEqualToString: @"Icon"]) {
     return windowRecord.application.icon;
   } else if ([columnName isEqualToString: @"AppName"]) {
-    return windowRecord.application.name;
+    return windowRecord.application.localizedName;
   } else {
     return windowRecord.name;
   }

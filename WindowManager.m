@@ -5,14 +5,13 @@
 // Licensed under WTFPL license
 // -------------------------------------------------------
 
-#import "Application.h"
 #import "Window.h"
 #import "WindowManager.h"
 
 @interface WindowManager ()
-- (NSArray *) getApplicationListAndStoreMapping: (NSDictionary **) mapping;
 - (NSArray *) getCGWindowList;
-- (NSDictionary *) getAccessibilityWindowDataForApplications: (NSArray *) applications;
+- (NSDictionary *) getAccessibilityWindowDataForPIDs: (NSArray *) pids;
+- (NSDictionary *) getPIDToApplicationMap;
 @end
 
 
@@ -20,10 +19,11 @@
 
 - (void) reloadWindowList {
   // collect the data we will need
-  NSDictionary *pidToApplicationMapping;
-  NSArray *applicationList = [self getApplicationListAndStoreMapping: &pidToApplicationMapping];
+  NSDictionary *pidToApplicationMap = [self getPIDToApplicationMap];
+  NSArray *pids = [pidToApplicationMap allKeys];
   NSArray *cgWindowList = [self getCGWindowList];
-  NSDictionary *accessibilityWindowsForApps = [self getAccessibilityWindowDataForApplications: applicationList];
+  NSDictionary *accessibilityWindowsForApps = [self getAccessibilityWindowDataForPIDs:pids];
+
   NSMutableDictionary *windowIndexes = [[NSMutableDictionary alloc] init];
   NSMutableArray *windows = [[NSMutableArray alloc] init];
 
@@ -33,7 +33,8 @@
   for (NSDictionary *cgWindowHash in cgWindowList) {
     // find the window's Application
     NSNumber *applicationPid = [cgWindowHash objectForKey: @"pid"];
-    Application *application = [pidToApplicationMapping objectForKey: applicationPid];
+    NSRunningApplication *application = [pidToApplicationMap objectForKey:applicationPid];
+
     if (application) {
       // get a matching accessibility API entry
       NSNumber *index = [windowIndexes objectForKey: applicationPid];
@@ -57,32 +58,14 @@
   windowList = windows;
 }
 
-- (NSArray *) getApplicationListAndStoreMapping: (NSDictionary **) mapping {
-  // get a list of launched applications
-  NSArray *runningApplications = [[NSWorkspace sharedWorkspace] runningApplications];
+- (NSDictionary *) getPIDToApplicationMap {
+  NSMutableDictionary *pidMap = [[NSMutableDictionary alloc] init];
 
-  // create an array of Application records based on the dictionaries
-  NSMutableArray *applications = [[NSMutableArray alloc] init];
-  NSMutableDictionary *pidMapping = [[NSMutableDictionary alloc] init];
-
-  for (NSRunningApplication *appInfo in runningApplications) {
-    Application *application = [[Application alloc] init];
-    application.pid = @(appInfo.processIdentifier);
-    if ([application.pid intValue] == [[NSProcessInfo processInfo] processIdentifier]) {
-      // don't show WindowFairy in the list
-      continue;
-    }
-    application.name = appInfo.localizedName;
-    application.icon = appInfo.icon;
-    [applications addObject: application];
-    [pidMapping setObject: application forKey: application.pid];
+  for (NSRunningApplication *application in [[NSWorkspace sharedWorkspace] runningApplications]) {
+    [pidMap setObject:application forKey:@(application.processIdentifier)];
   }
 
-  if (mapping) {
-    *mapping = pidMapping;
-  }
-
-  return applications;
+  return pidMap;
 };
 
 - (NSArray *) getCGWindowList {
@@ -98,7 +81,7 @@
     CFDictionaryRef info = CFArrayGetValueAtIndex(windowInfoArray, i);
 
     NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
-    
+
     if (windowName && windowName.length > 0 && ![windowName isEqualToString:@"Dock"]) {
       NSNumber *applicationPid = (NSNumber *) CFDictionaryGetValue(info, kCGWindowOwnerPID);
       NSDictionary *windowInfo = [NSDictionary dictionaryWithObjectsAndKeys: windowName, @"name",
@@ -111,7 +94,7 @@
   return windows;
 }
 
-- (NSDictionary *) getAccessibilityWindowDataForApplications: (NSArray *) applications {
+- (NSDictionary *) getAccessibilityWindowDataForPIDs: (NSArray *) pids {
   // create a dictionary mapping each Application to a list of AXUIElement records of all its windows
   NSMutableDictionary *windowLists = [[NSMutableDictionary alloc] init];
 
@@ -119,8 +102,8 @@
   AXError result;
   CFTypeRef value;
 
-  for (Application *application in applications) {
-    applicationElement = AXUIElementCreateApplication([application.pid intValue]);
+  for (NSNumber *pid in pids) {
+    applicationElement = AXUIElementCreateApplication([pid intValue]);
     result = AXUIElementCopyAttributeValue(applicationElement, kAXHiddenAttribute, &value);
     
     // filter out applications which are hidden
@@ -143,7 +126,7 @@
           }
         }
 
-        [windowLists setObject: (NSArray *) CFBridgingRelease(visibleWindows) forKey: application.pid];
+        [windowLists setObject:((NSArray *) CFBridgingRelease(visibleWindows)) forKey:pid];
       } else {
         NSLog(@"Error loading application info (hidden): %d", result);
       }
@@ -172,7 +155,7 @@
   }
 
   ProcessSerialNumber process;
-  GetProcessForPID([window.application.pid intValue], &process);
+  GetProcessForPID(window.application.processIdentifier, &process);
   SetFrontProcessWithOptions(&process, kSetFrontProcessFrontWindowOnly);
 }
 

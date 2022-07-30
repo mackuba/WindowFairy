@@ -12,7 +12,6 @@
 		58058EFD10922C370092962A /* SelectionWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 58058EFC10922C370092962A /* SelectionWindow.m */; };
 		58B5082A109313D40080A98B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58B50829109313D40080A98B /* Carbon.framework */; };
 		58DDA9B8108B301A0056A27F /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DDA9B7108B301A0056A27F /* Window.m */; };
-		58DDA9BB108B30230056A27F /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DDA9BA108B30230056A27F /* Application.m */; };
 		58DDA9BE108B302B0056A27F /* WindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DDA9BD108B302B0056A27F /* WindowManager.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -35,8 +34,6 @@
 		58B50829109313D40080A98B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		58DDA9B6108B301A0056A27F /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		58DDA9B7108B301A0056A27F /* Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Window.m; sourceTree = "<group>"; };
-		58DDA9B9108B30230056A27F /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
-		58DDA9BA108B30230056A27F /* Application.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		58DDA9BC108B302B0056A27F /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		58DDA9BD108B302B0056A27F /* WindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowManager.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* WindowFairy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WindowFairy-Info.plist"; sourceTree = "<group>"; };
@@ -59,8 +56,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				58DDA9B9108B30230056A27F /* Application.h */,
-				58DDA9BA108B30230056A27F /* Application.m */,
 				58058EFB10922C370092962A /* SelectionWindow.h */,
 				58058EFC10922C370092962A /* SelectionWindow.m */,
 				58DDA9B6108B301A0056A27F /* Window.h */,
@@ -205,7 +200,6 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* WindowFairyAppDelegate.m in Sources */,
 				58DDA9B8108B301A0056A27F /* Window.m in Sources */,
-				58DDA9BB108B30230056A27F /* Application.m in Sources */,
 				58DDA9BE108B302B0056A27F /* WindowManager.m in Sources */,
 				58058EFD10922C370092962A /* SelectionWindow.m in Sources */,
 			);
