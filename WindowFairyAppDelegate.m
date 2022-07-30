@@ -11,10 +11,11 @@
 #import "SelectionWindowController.h"
 #import "WindowFairyAppDelegate.h"
 
-#define SHOW_WINDOW_HOTKEY_ID         1
-#define SHOW_WINDOW_HOTKEY_NAME       'show'
-#define SHOW_WINDOW_HOTKEY_CODE       48   // tab
-#define SHOW_WINDOW_HOTKEY_MODIFIERS  optionKey
+UInt32 const ShowWindowHotkeyID = 1;
+OSType const ShowWindowHotkeyName = 'show';
+
+UInt32 const ShowWindowHotkeyKeyCode = 48;  // tab
+UInt32 const ShowWindowHotkeyModifiers = optionKey;
 
 
 OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *data) {
@@ -39,9 +40,10 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
 
   EventHotKeyRef hotKeyRef;
   EventHotKeyID hotKeyID;
-  hotKeyID.signature = SHOW_WINDOW_HOTKEY_NAME;
-  hotKeyID.id = SHOW_WINDOW_HOTKEY_ID;
-  RegisterEventHotKey(SHOW_WINDOW_HOTKEY_CODE, SHOW_WINDOW_HOTKEY_MODIFIERS, hotKeyID,
+  hotKeyID.id = ShowWindowHotkeyID;
+  hotKeyID.signature = ShowWindowHotkeyName;
+
+  RegisterEventHotKey(ShowWindowHotkeyKeyCode, ShowWindowHotkeyModifiers, hotKeyID,
     GetApplicationEventTarget(), 0, &hotKeyRef);
 }
 
