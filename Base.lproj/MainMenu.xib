@@ -655,7 +655,7 @@
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <customView id="561">
+        <customView id="561" userLabel="Content View">
             <rect key="frame" x="0.0" y="0.0" width="652" height="344"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
