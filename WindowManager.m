@@ -75,10 +75,14 @@
   CFArrayRef windowInfoArray = CGWindowListCreateDescriptionFromArray(windowIdArray);
   NSInteger windowCount = CFArrayGetCount(windowIdArray);
 
+  NSLog(@"%ld windows", windowCount);
+
   // convert dictionaries and array to Cocoa equivalents
   NSMutableArray *windows = [NSMutableArray arrayWithCapacity: windowCount];
   for (NSInteger i = 0; i < windowCount; i++) {
     CFDictionaryRef info = CFArrayGetValueAtIndex(windowInfoArray, i);
+
+    NSLog(@"%@", (__bridge NSDictionary *) info);
 
     NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
 
@@ -140,6 +144,8 @@
       NSLog(@"Error loading application info (windows): %d", result);
     }
   }
+
+  NSLog(@"AX window map = %@", windowLists);
 
   return windowLists;
 }
