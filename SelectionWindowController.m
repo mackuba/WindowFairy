@@ -72,6 +72,7 @@
 
 - (void) moveCursorToRow: (NSInteger) row {
   [tableView selectRowIndexes:[NSIndexSet indexSetWithIndex: row] byExtendingSelection: NO];
+  [tableView scrollRowToVisible:row];
 }
 
 - (void) moveCursorDown {
