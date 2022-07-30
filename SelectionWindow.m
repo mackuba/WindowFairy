@@ -6,9 +6,10 @@
 // -------------------------------------------------------
 
 #import "SelectionWindow.h"
-#import "WindowFairyAppDelegate.h"
 
 @implementation SelectionWindow
+
+@synthesize selectionDelegate;
 
 - (id) initWithView: (NSView *) view {
   self = [super initWithContentRect: NSMakeRect(300, 250, 1000, 500) // TODO: dynamic size
@@ -36,32 +37,31 @@
 - (void) keyDown: (NSEvent *) event {
   NSUInteger modifierFlags = [event modifierFlags];
   unsigned short keyCode = [event keyCode];
-  id delegate = [NSApp delegate];
 
   // TODO: handle press-and-hold
 
   if (modifierFlags & NSEventModifierFlagOption) {
     switch (keyCode) {
       case 53: // esc
-        [delegate closeWithoutSwitching];
+        [self close];
         return;
       case 36: // enter
-        [delegate performSwitch];
+        [selectionDelegate performSwitch];
         return;
       case 123: // left arrow
       case 126: // up arrow
-        [delegate moveCursorUp];
+        [selectionDelegate moveCursorUp];
         return;
       case 125: // down arrow
       case 124: // right arrow
-        [delegate moveCursorDown];
+        [selectionDelegate moveCursorDown];
         return;
       default:
         return;
     }
   } else {
     // alt was released - theoretically this shouldn't happen (we should get flagsChanged first)
-    [delegate performSwitch];
+    [selectionDelegate performSwitch];
   }
 }
 
@@ -69,7 +69,7 @@
   NSUInteger modifierFlags = [event modifierFlags];
   if (!(modifierFlags & NSEventModifierFlagOption)) {
     // alt released
-    [(WindowFairyAppDelegate *) [NSApp delegate] performSwitch];
+    [selectionDelegate performSwitch];
   }
 }
 

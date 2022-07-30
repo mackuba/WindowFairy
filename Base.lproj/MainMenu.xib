@@ -651,9 +651,7 @@
         </menu>
         <customObject id="494" customClass="WindowFairyAppDelegate">
             <connections>
-                <outlet property="tableView" destination="536" id="555"/>
-                <outlet property="view" destination="561" id="562"/>
-                <outlet property="windowManager" destination="544" id="551"/>
+                <outlet property="windowController" destination="Nmq-An-fUz" id="Qi6-MC-vsC"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
@@ -710,7 +708,7 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
-                                    <outlet property="dataSource" destination="494" id="560"/>
+                                    <outlet property="dataSource" destination="Nmq-An-fUz" id="fGD-It-cUA"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -728,5 +726,12 @@
             </subviews>
             <point key="canvasLocation" x="139" y="-94"/>
         </customView>
+        <customObject id="Nmq-An-fUz" customClass="SelectionWindowController">
+            <connections>
+                <outlet property="contentView" destination="561" id="8Z9-Rh-yid"/>
+                <outlet property="tableView" destination="536" id="nTn-ut-CCT"/>
+                <outlet property="windowManager" destination="544" id="RjP-aZ-4nc"/>
+            </connections>
+        </customObject>
     </objects>
 </document>

@@ -7,20 +7,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class WindowManager;
+@class SelectionWindowController;
 
-@interface WindowFairyAppDelegate : NSObject {
-  SelectionWindow *window;
-}
+@interface WindowFairyAppDelegate : NSObject <NSApplicationDelegate>
 
-- (void) performSwitch;
-- (void) closeWithoutSwitching;
-- (void) moveCursorUp;
-- (void) moveCursorDown;
 - (void) hotKeyActivated;
 
-@property IBOutlet NSView *view;
-@property IBOutlet WindowManager *windowManager;
-@property IBOutlet NSTableView *tableView;
+@property IBOutlet SelectionWindowController *windowController;
 
 @end

@@ -6,9 +6,12 @@
 // -------------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
+#import "SelectionWindowDelegate.h"
 
-@interface SelectionWindow : NSWindow {}
+@interface SelectionWindow : NSWindow
 
 - (id) initWithView: (NSView *) view;
+
+@property (weak) id<SelectionWindowDelegate> selectionDelegate;
 
 @end
