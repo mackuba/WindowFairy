@@ -12,7 +12,7 @@
 
 - (id) initWithView: (NSView *) view {
   self = [super initWithContentRect: NSMakeRect(300, 250, 1000, 500) // TODO: dynamic size
-                          styleMask: NSBorderlessWindowMask
+                          styleMask: NSWindowStyleMaskBorderless
                             backing: NSBackingStoreBuffered
                               defer: YES];
   if (self) {
@@ -40,7 +40,7 @@
 
   // TODO: handle press-and-hold
 
-  if (modifierFlags & NSAlternateKeyMask) {
+  if (modifierFlags & NSEventModifierFlagOption) {
     switch (keyCode) {
       case 53: // esc
         [delegate closeWithoutSwitching];
@@ -67,7 +67,7 @@
 
 - (void) flagsChanged: (NSEvent *) event {
   NSUInteger modifierFlags = [event modifierFlags];
-  if (!(modifierFlags & NSAlternateKeyMask)) {
+  if (!(modifierFlags & NSEventModifierFlagOption)) {
     // alt released
     [(WindowFairyAppDelegate *) [NSApp delegate] performSwitch];
   }
