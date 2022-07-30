@@ -87,7 +87,7 @@
   if (windowListManager.windowCount == 0) { return; }
 
   NSInteger currentRow = [tableView selectedRow];
-  currentRow = (currentRow - 1) % windowListManager.windowCount;
+  currentRow = (currentRow + windowListManager.windowCount - 1) % windowListManager.windowCount;
   [self moveCursorToRow: currentRow];
 }
 
