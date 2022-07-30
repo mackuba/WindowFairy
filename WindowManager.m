@@ -6,6 +6,7 @@
 // -------------------------------------------------------
 
 #import "Window.h"
+#import "WindowCGInfo.h"
 #import "WindowManager.h"
 
 @interface WindowManager ()
@@ -30,20 +31,19 @@
   // iterate over both window lists (single list from CGWindow and per-application lists from AX API)
   // create Window records using matching CGWindow hashes and AXUIElement records
 
-  for (NSDictionary *cgWindowHash in cgWindowList) {
+  for (WindowCGInfo *windowInfo in cgWindowList) {
     // find the window's Application
-    NSNumber *applicationPid = [cgWindowHash objectForKey: @"pid"];
-    NSRunningApplication *application = [pidToApplicationMap objectForKey:applicationPid];
+    NSRunningApplication *application = [pidToApplicationMap objectForKey:windowInfo.pid];
 
     if (application) {
       // get a matching accessibility API entry
-      NSNumber *index = [windowIndexes objectForKey: applicationPid];
+      NSNumber *index = [windowIndexes objectForKey:windowInfo.pid];
       NSInteger position = index ? [index intValue] : 0;
-      CFArrayRef applicationWindows = (__bridge CFArrayRef) [accessibilityWindowsForApps objectForKey: applicationPid];
+      CFArrayRef applicationWindows = (__bridge CFArrayRef) [accessibilityWindowsForApps objectForKey:windowInfo.pid];
 
       // create a Window object
       Window *window = [[Window alloc] init];
-      window.name = [cgWindowHash objectForKey: @"name"];
+      window.name = windowInfo.name;
       window.application = application;
 
       if (applicationWindows) {
@@ -51,7 +51,7 @@
       }
 
       [windows addObject: window];
-      [windowIndexes setObject: [NSNumber numberWithInt: (position + 1)] forKey: applicationPid];
+      [windowIndexes setObject: [NSNumber numberWithInt: (position + 1)] forKey:windowInfo.pid];
     }
   }
 
@@ -84,9 +84,8 @@
 
     if (windowName && windowName.length > 0 && ![windowName isEqualToString:@"Dock"]) {
       NSNumber *applicationPid = (NSNumber *) CFDictionaryGetValue(info, kCGWindowOwnerPID);
-      NSDictionary *windowInfo = [NSDictionary dictionaryWithObjectsAndKeys: windowName, @"name",
-                                                                             applicationPid, @"pid",
-                                                                             nil];
+      WindowCGInfo *windowInfo = [[WindowCGInfo alloc] initWithName:windowName pid:applicationPid];
+
       [windows addObject: windowInfo];
     }
   }
