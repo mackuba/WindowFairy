@@ -56,6 +56,7 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
     [tableView sizeLastColumnToFit];
     [self reloadView];
     [self moveCursorToRow: 0];
+    [window center];
     [window makeKeyAndOrderFront: nil];
     [window makeFirstResponder: [window contentView]];
   }
