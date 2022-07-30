@@ -51,7 +51,7 @@
       }
 
       [windows addObject: window];
-      [windowIndexes setObject: [NSNumber numberWithInt: (position + 1)] forKey:windowInfo.pid];
+      [windowIndexes setObject: [NSNumber numberWithInteger:(position + 1)] forKey:windowInfo.pid];
     }
   }
 
