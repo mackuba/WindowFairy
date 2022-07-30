@@ -19,16 +19,6 @@
 #define SHOW_WINDOW_HOTKEY_MODIFIERS  optionKey
 
 
-
-@interface WindowFairyAppDelegate ()
-- (void) reloadView;
-- (void) installGlobalHotKey;
-- (void) showSelectionWindow;
-- (void) moveCursorToRow: (NSInteger) row;
-- (void) hotKeyActivated;
-@end
-
-
 OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *data) {
   [(WindowFairyAppDelegate *) [NSApp delegate] hotKeyActivated];
   return noErr;

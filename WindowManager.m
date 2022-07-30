@@ -9,13 +9,6 @@
 #import "WindowCGInfo.h"
 #import "WindowManager.h"
 
-@interface WindowManager ()
-- (NSArray *) getCGWindowList;
-- (NSDictionary *) getAccessibilityWindowDataForPIDs: (NSArray *) pids;
-- (NSDictionary *) getPIDToApplicationMap;
-@end
-
-
 @implementation WindowManager
 
 - (void) reloadWindowList {
