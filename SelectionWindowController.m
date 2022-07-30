@@ -10,9 +10,19 @@
 #import "Window.h"
 #import "WindowManager.h"
 
+@interface SelectionWindowController () {
+  WindowManager *windowManager;
+}
+
+@end
+
 @implementation SelectionWindowController
 
-@synthesize contentView, tableView, windowManager;
+@synthesize contentView, tableView;
+
+- (void)awakeFromNib {
+  windowManager = [[WindowManager alloc] init];
+}
 
 // TODO: use CoreAnimation fade-in and fade-out to show and hide the window
 

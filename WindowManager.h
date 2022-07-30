@@ -7,9 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WindowManager : NSObject {
-  NSArray *windowList;
-}
+@interface WindowManager : NSObject
 
 - (void) reloadWindowList;
 - (void) switchToWindowAtIndex: (NSInteger) index;

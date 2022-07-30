@@ -9,6 +9,12 @@
 #import "WindowCGInfo.h"
 #import "WindowManager.h"
 
+@interface WindowManager () {
+  NSArray *windowList;
+}
+
+@end
+
 @implementation WindowManager
 
 - (void) reloadWindowList {

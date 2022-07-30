@@ -655,7 +655,6 @@
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <customObject id="544" customClass="WindowManager"/>
         <customView id="561">
             <rect key="frame" x="0.0" y="0.0" width="652" height="344"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -730,7 +729,6 @@
             <connections>
                 <outlet property="contentView" destination="561" id="8Z9-Rh-yid"/>
                 <outlet property="tableView" destination="536" id="nTn-ut-CCT"/>
-                <outlet property="windowManager" destination="544" id="RjP-aZ-4nc"/>
             </connections>
         </customObject>
     </objects>

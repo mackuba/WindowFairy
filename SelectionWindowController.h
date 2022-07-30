@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property IBOutlet NSView *contentView;
 @property IBOutlet NSTableView *tableView;
-@property IBOutlet WindowManager *windowManager;
 
 - (void) showSelectionWindow;
 
