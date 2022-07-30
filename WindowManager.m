@@ -58,22 +58,22 @@
 }
 
 - (NSArray *) getApplicationListAndStoreMapping: (NSDictionary **) mapping {
-  // get a list of dictionaries for each launched application
-  NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
-  NSArray *applicationHash = [workspace launchedApplications];
+  // get a list of launched applications
+  NSArray *runningApplications = [[NSWorkspace sharedWorkspace] runningApplications];
 
   // create an array of Application records based on the dictionaries
   NSMutableArray *applications = [[NSMutableArray alloc] init];
   NSMutableDictionary *pidMapping = [[NSMutableDictionary alloc] init];
-  for (NSDictionary *info in applicationHash) {
+
+  for (NSRunningApplication *appInfo in runningApplications) {
     Application *application = [[Application alloc] init];
-    application.pid = [info objectForKey: @"NSApplicationProcessIdentifier"];
+    application.pid = @(appInfo.processIdentifier);
     if ([application.pid intValue] == [[NSProcessInfo processInfo] processIdentifier]) {
       // don't show WindowFairy in the list
       continue;
     }
-    application.name = [info objectForKey: @"NSApplicationName"];
-    application.icon = [workspace iconForFile: [info objectForKey: @"NSApplicationPath"]];
+    application.name = appInfo.localizedName;
+    application.icon = appInfo.icon;
     [applications addObject: application];
     [pidMapping setObject: application forKey: application.pid];
   }
@@ -97,11 +97,9 @@
   for (NSInteger i = 0; i < windowCount; i++) {
     CFDictionaryRef info = CFArrayGetValueAtIndex(windowInfoArray, i);
 
-    // TODO: still some fake windows get through (Skype emoticons, duplicate Preview pdf)
-
-    // filter out fake entries (system tray icons, menu, dock, window drawers, etc.)
-    if (CFDictionaryGetValue(info, kCGWindowName)) {
-      NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
+    NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
+    
+    if (windowName && windowName.length > 0 && ![windowName isEqualToString:@"Dock"]) {
       NSNumber *applicationPid = (NSNumber *) CFDictionaryGetValue(info, kCGWindowOwnerPID);
       NSDictionary *windowInfo = [NSDictionary dictionaryWithObjectsAndKeys: windowName, @"name",
                                                                              applicationPid, @"pid",
