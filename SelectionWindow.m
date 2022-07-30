@@ -42,6 +42,11 @@
 
   if (modifierFlags & NSEventModifierFlagOption) {
     switch (keyCode) {
+      case 48: // tab
+        if (modifierFlags & NSEventModifierFlagShift) {
+          [selectionDelegate moveCursorUp];
+        }
+        return;
       case 53: // esc
         [self close];
         return;
