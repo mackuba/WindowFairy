@@ -69,7 +69,7 @@
   NSUInteger modifierFlags = [event modifierFlags];
   if (!(modifierFlags & NSAlternateKeyMask)) {
     // alt released
-    [[NSApp delegate] performSwitch];
+    [(WindowFairyAppDelegate *) [NSApp delegate] performSwitch];
   }
 }
 

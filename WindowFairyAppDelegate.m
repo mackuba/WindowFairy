@@ -25,11 +25,12 @@
 - (void) installGlobalHotKey;
 - (void) showSelectionWindow;
 - (void) moveCursorToRow: (NSInteger) row;
+- (void) hotKeyActivated;
 @end
 
 
 OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *data) {
-  [[NSApp delegate] hotKeyActivated];
+  [(WindowFairyAppDelegate *) [NSApp delegate] hotKeyActivated];
   return noErr;
 }
 
