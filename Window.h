@@ -11,6 +11,6 @@
 
 @property (copy) NSString *name;
 @property NSRunningApplication *application;
-@property AXUIElementRef accessibilityElement;
+@property NSInteger position;
 
 @end

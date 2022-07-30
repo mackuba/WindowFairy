@@ -14,9 +14,7 @@
 - (void) reloadWindowList {
   // collect the data we will need
   NSDictionary *pidToApplicationMap = [self getPIDToApplicationMap];
-  NSArray *pids = [pidToApplicationMap allKeys];
   NSArray *cgWindowList = [self getCGWindowList];
-  NSDictionary *accessibilityWindowsForApps = [self getAccessibilityWindowDataForPIDs:pids];
 
   NSMutableDictionary *windowIndexes = [[NSMutableDictionary alloc] init];
   NSMutableArray *windows = [[NSMutableArray alloc] init];
@@ -32,16 +30,12 @@
       // get a matching accessibility API entry
       NSNumber *index = [windowIndexes objectForKey:windowInfo.pid];
       NSInteger position = index ? [index intValue] : 0;
-      CFArrayRef applicationWindows = (__bridge CFArrayRef) [accessibilityWindowsForApps objectForKey:windowInfo.pid];
 
       // create a Window object
       Window *window = [[Window alloc] init];
       window.name = windowInfo.name;
       window.application = application;
-
-      if (applicationWindows) {
-        window.accessibilityElement = (AXUIElementRef) CFArrayGetValueAtIndex(applicationWindows, position);
-      }
+      window.position = position;
 
       [windows addObject: window];
       [windowIndexes setObject: [NSNumber numberWithInteger:(position + 1)] forKey:windowInfo.pid];
@@ -118,68 +112,59 @@
   }
 }
 
-- (NSDictionary *) getAccessibilityWindowDataForPIDs: (NSArray *) pids {
-  // create a dictionary mapping each Application to a list of AXUIElement records of all its windows
-  NSMutableDictionary *windowLists = [[NSMutableDictionary alloc] init];
-
-  AXUIElementRef applicationElement;
+- (NSArray *) getAccessibilityWindowDataForPID: (pid_t) pid {
   AXError result;
   CFTypeRef value;
 
-  for (NSNumber *pid in pids) {
-    applicationElement = AXUIElementCreateApplication([pid intValue]);
-    result = AXUIElementCopyAttributeValue(applicationElement, kAXHiddenAttribute, &value);
-    
-    // filter out applications which are hidden
-    if (result == kAXErrorSuccess && CFBooleanGetValue(value) == NO) {
-      result = AXUIElementCopyAttributeValue(applicationElement, kAXWindowsAttribute, &value);
-      if (result == kAXErrorSuccess) {
-        CFArrayRef applicationWindows = (CFArrayRef) value;
-        NSInteger windowCount = CFArrayGetCount(applicationWindows);
+  AXUIElementRef applicationElement = AXUIElementCreateApplication(pid);
+  result = AXUIElementCopyAttributeValue(applicationElement, kAXWindowsAttribute, &value);
 
-        // filter out fake window records and minimized windows (minimized attribute is null or true)
-        CFMutableArrayRef visibleWindows = CFArrayCreateMutable(NULL, windowCount, NULL);
-        for (NSInteger i = 0; i < windowCount; i++) {
-          AXUIElementRef windowElement = CFArrayGetValueAtIndex(applicationWindows, i);
+  if (result == kAXErrorSuccess) {
+    CFArrayRef applicationWindows = (CFArrayRef) value;
+    NSInteger windowCount = CFArrayGetCount(applicationWindows);
 
-          result = AXUIElementCopyAttributeValue(windowElement, kAXMinimizedAttribute, &value);
-          if (result == kAXErrorSuccess && value && CFBooleanGetValue(value) == NO) {
-            CFArrayAppendValue(visibleWindows, windowElement);
-          } else {
-            NSLog(@"Error loading application info (minimized): %d", result);
-          }
-        }
+    // filter out fake window records and minimized windows (minimized attribute is null or true)
+    CFMutableArrayRef visibleWindows = CFArrayCreateMutable(NULL, windowCount, NULL);
+    for (NSInteger i = 0; i < windowCount; i++) {
+      AXUIElementRef windowElement = CFArrayGetValueAtIndex(applicationWindows, i);
 
-        [windowLists setObject:((NSArray *) CFBridgingRelease(visibleWindows)) forKey:pid];
+      result = AXUIElementCopyAttributeValue(windowElement, kAXMinimizedAttribute, &value);
+      if (result == kAXErrorSuccess && value && CFBooleanGetValue(value) == NO) {
+        CFArrayAppendValue(visibleWindows, windowElement);
       } else {
-        NSLog(@"Error loading application info (hidden): %d", result);
+        NSLog(@"Error loading application info (minimized): %d", result);
       }
-    } else if (result == kAXErrorAPIDisabled) {
-      NSRunAlertPanel(@"Error",
-                      @"Accessibility access needs to be enabled for this app in System Preferences.",
-                      @"OK",
-                      nil,
-                      nil);
-      return nil;
-    } else {
-      NSLog(@"Error loading application info (windows): %d", result);
     }
-  }
 
-  return windowLists;
+    return CFBridgingRelease(visibleWindows);
+  } else if (result == kAXErrorAPIDisabled) {
+    NSRunAlertPanel(@"Error",
+                    @"Accessibility access needs to be enabled for this app in System Preferences.",
+                    @"OK",
+                    nil,
+                    nil);
+    return nil;
+  } else {
+    NSLog(@"Error loading application windows: %d", result);
+    return nil;
+  }
 }
 
 - (void) switchToWindowAtIndex: (NSInteger) index {
   Window *window = [windowList objectAtIndex: index];
 
-  if (window.accessibilityElement) {
-    AXUIElementPerformAction(window.accessibilityElement, kAXRaiseAction);
+  pid_t pid = window.application.processIdentifier;
+  NSArray *windowsInfo = [self getAccessibilityWindowDataForPID:pid];
+
+  if (windowsInfo) {
+    AXUIElementRef windowElement = (__bridge AXUIElementRef) [windowsInfo objectAtIndex:window.position];
+    AXUIElementPerformAction(windowElement, kAXRaiseAction);
   } else {
-    NSLog(@"Can't switch to window %@, no AX element set", window.name);
+    NSLog(@"Can't switch to window %@, no AX info available", window.name);
   }
 
   ProcessSerialNumber process;
-  GetProcessForPID(window.application.processIdentifier, &process);
+  GetProcessForPID(pid, &process);
   SetFrontProcessWithOptions(&process, kSetFrontProcessFrontWindowOnly);
 }
 
