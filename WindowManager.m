@@ -63,6 +63,7 @@
   CFArrayRef windowIdArray = CGWindowListCreate(queryOptions, kCGNullWindowID);
   CFArrayRef windowInfoArray = CGWindowListCreateDescriptionFromArray(windowIdArray);
   NSArray *windowInfos = (NSArray *) CFBridgingRelease(windowInfoArray);
+  CFRelease(windowIdArray);
 
   // filter out items like menu bar icons, menu bar itself, dock etc.
 
@@ -117,24 +118,30 @@
 
   AXUIElementRef applicationElement = AXUIElementCreateApplication(pid);
   result = AXUIElementCopyAttributeValue(applicationElement, kAXWindowsAttribute, &value);
+  CFRelease(applicationElement);
 
   if (result == kAXErrorSuccess) {
     CFArrayRef applicationWindows = (CFArrayRef) value;
     NSInteger windowCount = CFArrayGetCount(applicationWindows);
 
     // filter out fake window records and minimized windows (minimized attribute is null or true)
-    CFMutableArrayRef visibleWindows = CFArrayCreateMutable(NULL, windowCount, NULL);
+    CFMutableArrayRef visibleWindows = CFArrayCreateMutable(NULL, windowCount, &kCFTypeArrayCallBacks);
     for (NSInteger i = 0; i < windowCount; i++) {
       AXUIElementRef windowElement = CFArrayGetValueAtIndex(applicationWindows, i);
 
       result = AXUIElementCopyAttributeValue(windowElement, kAXMinimizedAttribute, &value);
-      if (result == kAXErrorSuccess && value && CFBooleanGetValue(value) == NO) {
-        CFArrayAppendValue(visibleWindows, windowElement);
+      if (result == kAXErrorSuccess && value) {
+        if (CFBooleanGetValue(value) == NO) {
+          CFArrayAppendValue(visibleWindows, windowElement);
+        }
+
+        CFRelease(value);
       } else {
         NSLog(@"Error loading application info (minimized): %d", result);
       }
     }
 
+    CFRelease(applicationWindows);
     return CFBridgingRelease(visibleWindows);
   } else if (result == kAXErrorAPIDisabled) {
     NSRunAlertPanel(@"Error",
