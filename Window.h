@@ -7,11 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Window : NSObject {
-  NSString *name;
-  NSRunningApplication *application;
-  AXUIElementRef accessibilityElement;
-}
+@interface Window : NSObject
 
 @property (copy) NSString *name;
 @property NSRunningApplication *application;

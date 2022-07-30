@@ -10,9 +10,6 @@
 @class WindowManager;
 
 @interface WindowFairyAppDelegate : NSObject {
-  NSView *view;
-  NSTableView *tableView;
-  WindowManager *windowManager;
   SelectionWindow *window;
 }
 

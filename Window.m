@@ -9,6 +9,4 @@
 
 @implementation Window
 
-@synthesize name, application, accessibilityElement;
-
 @end
