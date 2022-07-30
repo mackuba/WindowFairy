@@ -53,6 +53,7 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
   if (!window) {
     [NSApp activateIgnoringOtherApps: YES];
     window = [[SelectionWindow alloc] initWithView: view];
+    [tableView sizeLastColumnToFit];
     [self reloadView];
     [self moveCursorToRow: 0];
     [window makeKeyAndOrderFront: nil];
