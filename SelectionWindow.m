@@ -48,7 +48,7 @@
         }
         return;
       case 53: // esc
-        [self close];
+        [selectionDelegate closeWithoutSwitching];
         return;
       case 36: // enter
         [selectionDelegate performSwitch];

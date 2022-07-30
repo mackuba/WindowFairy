@@ -101,4 +101,13 @@
   [self.window close];
 }
 
+- (void) closeWithoutSwitching {
+  // we need to restore focus to the app & window that was originally selected
+  if (windowListManager.windowCount > 0) {
+    [windowListManager switchToWindowAtIndex: 0];
+  }
+
+  [self.window close];
+}
+
 @end

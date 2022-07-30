@@ -10,5 +10,6 @@
 - (void) moveCursorDown;
 - (void) moveCursorUp;
 - (void) performSwitch;
+- (void) closeWithoutSwitching;
 
 @end
