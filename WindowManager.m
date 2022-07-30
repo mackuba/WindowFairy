@@ -62,24 +62,23 @@
   CGWindowListOption queryOptions = kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements;
   CFArrayRef windowIdArray = CGWindowListCreate(queryOptions, kCGNullWindowID);
   CFArrayRef windowInfoArray = CGWindowListCreateDescriptionFromArray(windowIdArray);
-  NSInteger windowCount = CFArrayGetCount(windowIdArray);
+  NSArray *windowInfos = (NSArray *) CFBridgingRelease(windowInfoArray);
 
-  // convert dictionaries and array to Cocoa equivalents
-  NSMutableArray *windows = [NSMutableArray arrayWithCapacity: windowCount];
+  // filter out items like menu bar icons, menu bar itself, dock etc.
+
+  NSMutableArray *windows = [[NSMutableArray alloc] init];
   BOOL namesFound = NO;
 
-  for (NSInteger i = 0; i < windowCount; i++) {
-    CFDictionaryRef info = CFArrayGetValueAtIndex(windowInfoArray, i);
-
-    NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
-    NSNumber *windowLayer = (NSNumber *) CFDictionaryGetValue(info, kCGWindowLayer);
+  for (NSDictionary *info in windowInfos) {
+    NSString *windowName = [info objectForKey:(NSString *)kCGWindowName];
+    NSNumber *windowLayer = [info objectForKey:(NSString *)kCGWindowLayer];
 
     if (windowName && ![windowName isEqual:@"Menubar"]) {
       namesFound = YES;
     }
 
     if ([windowLayer integerValue] == NSNormalWindowLevel) {
-      NSNumber *applicationPid = (NSNumber *) CFDictionaryGetValue(info, kCGWindowOwnerPID);
+      NSNumber *applicationPid = [info objectForKey:(NSString *)kCGWindowOwnerPID];
       WindowCGInfo *windowInfo = [[WindowCGInfo alloc] initWithName:windowName pid:applicationPid];
 
       [windows addObject: windowInfo];
