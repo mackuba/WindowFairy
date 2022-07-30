@@ -12,7 +12,7 @@
 @synthesize selectionDelegate;
 
 - (id) initWithView: (NSView *) view {
-  self = [super initWithContentRect: NSMakeRect(300, 250, 1000, 500) // TODO: dynamic size
+  self = [super initWithContentRect: NSMakeRect(300, 250, 1000, 500)
                           styleMask: NSWindowStyleMaskBorderless
                             backing: NSBackingStoreBuffered
                               defer: YES];

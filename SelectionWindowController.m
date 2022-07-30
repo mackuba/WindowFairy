@@ -30,19 +30,37 @@
   if (!self.window) {
     SelectionWindow *window = [[SelectionWindow alloc] initWithView:contentView];
     [window setSelectionDelegate:self];
-    [window center];
     [tableView sizeLastColumnToFit];
     self.window = window;
   }
 
   if (!self.window.isVisible) {
     [NSApp activateIgnoringOtherApps:YES];
+
     [windowListManager reloadList];
     [tableView reloadData];
     [self moveCursorToRow:0];
+    [self resizeWindow];
+
     [self.window makeKeyAndOrderFront:nil];
     [self.window makeFirstResponder:contentView];
   }
+}
+
+- (void) resizeWindow {
+  NSScreen *screen = [NSScreen mainScreen];
+  CGFloat maxWidth = MIN(1000, screen.frame.size.width - 50);
+  CGFloat maxHeight = MIN(800, screen.frame.size.height - 50);
+
+  NSRect lastRow = [tableView rectOfRow:(tableView.numberOfRows - 1)];
+  CGFloat contentHeight = lastRow.origin.y + lastRow.size.height;
+
+  NSRect frame = self.window.frame;
+  frame.size.width = maxWidth;
+  frame.size.height = MIN(contentHeight + 40, maxHeight);
+
+  [self.window setFrame:frame display:YES];
+  [self.window center];
 }
 
 
