@@ -1,7 +1,7 @@
 // -------------------------------------------------------
 // SelectionWindow.h
 //
-// Copyright (c) 2009 Jakub Suder <jakub.suder@gmail.com>
+// Copyright (c) 2009 Kuba Suder
 // Licensed under WTFPL license
 // -------------------------------------------------------
 

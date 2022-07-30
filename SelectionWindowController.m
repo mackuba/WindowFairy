@@ -1,7 +1,7 @@
 // -------------------------------------------------------
 // SelectionWindowController.m
 //
-// Copyright (c) 2022 Jakub Suder <jakub.suder@gmail.com>
+// Copyright (c) 2022 Kuba Suder
 // Licensed under WTFPL license
 // -------------------------------------------------------
 
