@@ -8,10 +8,10 @@
 #import "SelectionWindow.h"
 #import "SelectionWindowController.h"
 #import "Window.h"
-#import "WindowManager.h"
+#import "WindowListManager.h"
 
 @interface SelectionWindowController () {
-  WindowManager *windowManager;
+  WindowListManager *windowListManager;
 }
 
 @end
@@ -21,7 +21,7 @@
 @synthesize contentView, tableView;
 
 - (void)awakeFromNib {
-  windowManager = [[WindowManager alloc] init];
+  windowListManager = [[WindowListManager alloc] init];
 }
 
 // TODO: use CoreAnimation fade-in and fade-out to show and hide the window
@@ -37,7 +37,7 @@
 
   if (!self.window.isVisible) {
     [NSApp activateIgnoringOtherApps:YES];
-    [windowManager reloadWindowList];
+    [windowListManager reloadList];
     [tableView reloadData];
     [self moveCursorToRow:0];
     [self.window makeKeyAndOrderFront:nil];
@@ -49,13 +49,13 @@
 #pragma mark - NSTableViewDataSource
 
 - (NSInteger) numberOfRowsInTableView: (NSTableView *) view {
-  return windowManager.windowCount;
+  return windowListManager.windowCount;
 }
 
 - (id) tableView: (NSTableView *) view
        objectValueForTableColumn: (NSTableColumn *) column
        row: (NSInteger) row {
-  Window *windowRecord = [windowManager windowAtIndex: row];
+  Window *windowRecord = [windowListManager windowAtIndex: row];
   NSString *columnName = (NSString *) [column identifier];
 
   if ([columnName isEqualToString: @"Icon"]) {
@@ -75,18 +75,18 @@
 }
 
 - (void) moveCursorDown {
-  if (windowManager.windowCount == 0) { return; }
+  if (windowListManager.windowCount == 0) { return; }
 
   NSInteger currentRow = [tableView selectedRow];
-  currentRow = (currentRow + 1) % windowManager.windowCount;
+  currentRow = (currentRow + 1) % windowListManager.windowCount;
   [self moveCursorToRow: currentRow];
 }
 
 - (void) moveCursorUp {
-  if (windowManager.windowCount == 0) { return; }
+  if (windowListManager.windowCount == 0) { return; }
 
   NSInteger currentRow = [tableView selectedRow];
-  currentRow = (currentRow - 1) % windowManager.windowCount;
+  currentRow = (currentRow - 1) % windowListManager.windowCount;
   [self moveCursorToRow: currentRow];
 }
 
@@ -94,7 +94,7 @@
   NSInteger row = [tableView selectedRow];
 
   if (row > -1) {
-    [windowManager switchToWindowAtIndex: MAX(row, 0)];
+    [windowListManager switchToWindowAtIndex: MAX(row, 0)];
   }
 
   [self.window close];

@@ -7,17 +7,17 @@
 
 #import "Window.h"
 #import "WindowCGInfo.h"
-#import "WindowManager.h"
+#import "WindowListManager.h"
 
-@interface WindowManager () {
+@interface WindowListManager () {
   NSArray *windowList;
 }
 
 @end
 
-@implementation WindowManager
+@implementation WindowListManager
 
-- (void) reloadWindowList {
+- (void) reloadList {
   // collect the data we will need
   NSDictionary *pidToApplicationMap = [self getPIDToApplicationMap];
   NSArray *cgWindowList = [self getCGWindowList];

@@ -7,9 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WindowManager : NSObject
+@interface WindowListManager : NSObject
 
-- (void) reloadWindowList;
+- (void) reloadList;
 - (void) switchToWindowAtIndex: (NSInteger) index;
 - (Window *) windowAtIndex: (NSInteger) index;
 

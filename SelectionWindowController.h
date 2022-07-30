@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WindowManager;
+@class WindowListManager;
 
 @interface SelectionWindowController : NSWindowController <NSTableViewDataSource, SelectionWindowDelegate>
 

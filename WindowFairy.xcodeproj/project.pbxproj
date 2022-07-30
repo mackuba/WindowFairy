@@ -12,7 +12,7 @@
 		58058EFD10922C370092962A /* SelectionWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 58058EFC10922C370092962A /* SelectionWindow.m */; };
 		58B5082A109313D40080A98B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58B50829109313D40080A98B /* Carbon.framework */; };
 		58DDA9B8108B301A0056A27F /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DDA9B7108B301A0056A27F /* Window.m */; };
-		58DDA9BE108B302B0056A27F /* WindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DDA9BD108B302B0056A27F /* WindowManager.m */; };
+		58DDA9BE108B302B0056A27F /* WindowListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DDA9BD108B302B0056A27F /* WindowListManager.m */; };
 		58F6D2C028957FF70068427F /* WindowCGInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F6D2BD28957E2D0068427F /* WindowCGInfo.m */; };
 		8CC024AC2895CE5C002B9A43 /* SelectionWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC024AA2895CE5C002B9A43 /* SelectionWindowController.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -34,8 +34,8 @@
 		58B50829109313D40080A98B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		58DDA9B6108B301A0056A27F /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		58DDA9B7108B301A0056A27F /* Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Window.m; sourceTree = "<group>"; };
-		58DDA9BC108B302B0056A27F /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
-		58DDA9BD108B302B0056A27F /* WindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowManager.m; sourceTree = "<group>"; };
+		58DDA9BC108B302B0056A27F /* WindowListManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowListManager.h; sourceTree = "<group>"; };
+		58DDA9BD108B302B0056A27F /* WindowListManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowListManager.m; sourceTree = "<group>"; };
 		58F6D2BD28957E2D0068427F /* WindowCGInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowCGInfo.m; sourceTree = "<group>"; };
 		58F6D2BF28957E390068427F /* WindowCGInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowCGInfo.h; sourceTree = "<group>"; };
 		8C0E3A7C2895979500FFE56B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -74,8 +74,8 @@
 				58F6D2BD28957E2D0068427F /* WindowCGInfo.m */,
 				256AC3D80F4B6AC300CF3369 /* WindowFairyAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* WindowFairyAppDelegate.m */,
-				58DDA9BC108B302B0056A27F /* WindowManager.h */,
-				58DDA9BD108B302B0056A27F /* WindowManager.m */,
+				58DDA9BC108B302B0056A27F /* WindowListManager.h */,
+				58DDA9BD108B302B0056A27F /* WindowListManager.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -221,7 +221,7 @@
 				256AC3DA0F4B6AC300CF3369 /* WindowFairyAppDelegate.m in Sources */,
 				8CC024AC2895CE5C002B9A43 /* SelectionWindowController.m in Sources */,
 				58DDA9B8108B301A0056A27F /* Window.m in Sources */,
-				58DDA9BE108B302B0056A27F /* WindowManager.m in Sources */,
+				58DDA9BE108B302B0056A27F /* WindowListManager.m in Sources */,
 				58058EFD10922C370092962A /* SelectionWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
