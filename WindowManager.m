@@ -62,6 +62,8 @@
 };
 
 - (NSArray *) getCGWindowList {
+  [self requestScreenAccess];
+
   // get a list of dictionaries for each window on screen from CGWindow API
   CGWindowListOption queryOptions = kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements;
   CFArrayRef windowIdArray = CGWindowListCreate(queryOptions, kCGNullWindowID);
@@ -70,13 +72,19 @@
 
   // convert dictionaries and array to Cocoa equivalents
   NSMutableArray *windows = [NSMutableArray arrayWithCapacity: windowCount];
+  BOOL namesFound = NO;
+
   for (NSInteger i = 0; i < windowCount; i++) {
     CFDictionaryRef info = CFArrayGetValueAtIndex(windowInfoArray, i);
 
     NSString *windowName = (NSString *) CFDictionaryGetValue(info, kCGWindowName);
     NSNumber *windowLayer = (NSNumber *) CFDictionaryGetValue(info, kCGWindowLayer);
 
-    if (windowName && windowName.length > 0 && [windowLayer integerValue] == NSNormalWindowLevel) {
+    if (windowName && ![windowName isEqual:@"Menubar"]) {
+      namesFound = YES;
+    }
+
+    if ([windowLayer integerValue] == NSNormalWindowLevel) {
       NSNumber *applicationPid = (NSNumber *) CFDictionaryGetValue(info, kCGWindowOwnerPID);
       WindowCGInfo *windowInfo = [[WindowCGInfo alloc] initWithName:windowName pid:applicationPid];
 
@@ -84,7 +92,30 @@
     }
   }
 
+  if (!namesFound) {
+    NSRunAlertPanel(@"Error",
+                    @"Screen recording access needs to be enabled for this app in System Preferences.",
+                    @"OK",
+                    nil,
+                    nil);
+  }
+
   return windows;
+}
+
+- (void) requestScreenAccess {
+  if (@available(macOS 10.15, *)) {
+    // hack to request access to screen recording
+    // https://stackoverflow.com/a/60773696
+
+    CGImageRef screenshot = CGWindowListCreateImage(
+      CGRectMake(0, 0, 1, 1),
+      kCGWindowListOptionOnScreenOnly,
+      kCGNullWindowID,
+      kCGWindowImageDefault
+    );
+    CFRelease(screenshot);
+  }
 }
 
 - (NSDictionary *) getAccessibilityWindowDataForPIDs: (NSArray *) pids {
