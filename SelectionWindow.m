@@ -18,10 +18,13 @@
                               defer: YES];
   if (self) {
     [self setLevel: NSScreenSaverWindowLevel];
-    [self setBackgroundColor: [NSColor colorWithDeviceRed: 0 green: 0 blue: 0 alpha: 0.7]];
+    [self setBackgroundColor: [NSColor clearColor]];
     [self setOpaque: NO];
     [self setContentView: view];
-    [self setReleasedWhenClosed: NO];
+
+    view.wantsLayer = YES;
+    view.layer.backgroundColor = [[NSColor colorWithDeviceRed: 0 green: 0 blue: 0 alpha: 0.7] CGColor];
+    view.layer.cornerRadius = 15.0;
   }
   return self;
 }
