@@ -185,6 +185,7 @@ NSInteger const ScreenRecordingAccessError = 2;
     NSLog(@"Can't switch to window %@, no AX info available", window.name);
   }
 
+  // should be [window.application activateWithOptions:0] now, but this has a tiny but noticeable delay...
   ProcessSerialNumber process;
   GetProcessForPID(pid, &process);
   SetFrontProcessWithOptions(&process, kSetFrontProcessFrontWindowOnly);
