@@ -30,6 +30,17 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
 
 - (void) awakeFromNib {
   [self installGlobalHotKey];
+  [self requestAccessibilityPermission];
+}
+
+- (void) requestAccessibilityPermission {
+  CFMutableDictionaryRef options = CFDictionaryCreateMutable(
+    kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks
+  );
+
+  CFDictionaryAddValue(options, kAXTrustedCheckOptionPrompt, kCFBooleanTrue);
+  AXIsProcessTrustedWithOptions(options);
+  CFRelease(options);
 }
 
 - (void) installGlobalHotKey {
