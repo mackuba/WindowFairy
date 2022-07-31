@@ -721,22 +721,34 @@
                     </scroller>
                 </scrollView>
                 <customView hidden="YES" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sbe-Ra-MNV">
-                    <rect key="frame" x="267" y="295" width="118" height="29"/>
+                    <rect key="frame" x="224" y="293" width="205" height="31"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NH3-2b-jgh">
-                            <rect key="frame" x="3" y="5" width="112" height="19"/>
+                            <rect key="frame" x="3" y="6" width="112" height="19"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Warning Label" id="b0y-nZ-kgR">
                                 <font key="font" metaFont="system" size="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Or3-iX-i5a">
+                            <rect key="frame" x="121" y="2" width="81" height="26"/>
+                            <buttonCell key="cell" type="bevel" title="Show me…" bezelStyle="regularSquare" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WHn-pc-q1s">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="smallSystem"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="showSystemPreferencesPanel:" target="Nmq-An-fUz" id="vpV-z9-v3b"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="NH3-2b-jgh" secondAttribute="bottom" constant="5" id="C1u-US-gNB"/>
-                        <constraint firstItem="NH3-2b-jgh" firstAttribute="top" secondItem="Sbe-Ra-MNV" secondAttribute="top" constant="5" id="GXh-4l-gNH"/>
-                        <constraint firstAttribute="trailing" secondItem="NH3-2b-jgh" secondAttribute="trailing" constant="5" id="Y3S-jv-Cxf"/>
+                        <constraint firstItem="Or3-iX-i5a" firstAttribute="leading" secondItem="NH3-2b-jgh" secondAttribute="trailing" constant="10" id="BHG-kP-W24"/>
+                        <constraint firstItem="Or3-iX-i5a" firstAttribute="top" secondItem="Sbe-Ra-MNV" secondAttribute="top" constant="5" id="Pi5-i2-Ofm"/>
+                        <constraint firstAttribute="bottom" secondItem="Or3-iX-i5a" secondAttribute="bottom" constant="5" id="iwY-ul-uOd"/>
                         <constraint firstItem="NH3-2b-jgh" firstAttribute="leading" secondItem="Sbe-Ra-MNV" secondAttribute="leading" constant="5" id="lwh-It-Tav"/>
+                        <constraint firstAttribute="trailing" secondItem="Or3-iX-i5a" secondAttribute="trailing" constant="5" id="mP5-4r-dVB"/>
+                        <constraint firstItem="NH3-2b-jgh" firstAttribute="centerY" secondItem="Sbe-Ra-MNV" secondAttribute="centerY" id="y39-8l-bmq"/>
                     </constraints>
                 </customView>
             </subviews>

@@ -89,6 +89,21 @@ static NSInteger const WarningLabelMargin = 20;
   [self.window center];
 }
 
+- (IBAction) showSystemPreferencesPanel:(id)sender {
+  NSString *urlString;
+  NSInteger errorCode = windowListManager.error.code;
+
+  if (errorCode == AccessibilityAccessError) {
+    urlString = @"x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility";
+  } else if (errorCode == ScreenRecordingAccessError) {
+    urlString = @"x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture";
+  }
+
+  if (urlString) {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+    [self.window close];
+  }
+}
 
 #pragma mark - NSTableViewDataSource
 

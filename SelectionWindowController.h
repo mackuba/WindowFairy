@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property IBOutlet NSView *warningLabelWrapper;
 @property IBOutlet NSLayoutConstraint *scrollViewToTopConstraint;
 
+- (IBAction) showSystemPreferencesPanel:(id)sender;
 - (void) showSelectionWindow;
 
 @end
