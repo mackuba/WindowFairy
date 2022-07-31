@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property IBOutlet NSView *contentView;
 @property IBOutlet NSTableView *tableView;
+@property IBOutlet NSTextField *warningLabel;
+@property IBOutlet NSView *warningLabelWrapper;
+@property IBOutlet NSLayoutConstraint *scrollViewToTopConstraint;
 
 - (void) showSelectionWindow;
 

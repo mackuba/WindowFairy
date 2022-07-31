@@ -10,6 +10,13 @@
 #import "Window.h"
 #import "WindowListManager.h"
 
+static NSInteger const WindowMaxWidth = 1000;
+static NSInteger const WindowMaxHeight = 800;
+static NSInteger const WindowScreenXMargin = 50;
+static NSInteger const WindowScreenYMargin = 50;
+static NSInteger const TableViewPadding = 20;
+static NSInteger const WarningLabelMargin = 20;
+
 @interface SelectionWindowController () {
   WindowListManager *windowListManager;
 }
@@ -32,6 +39,9 @@
     [window setSelectionDelegate:self];
     [tableView sizeLastColumnToFit];
     self.window = window;
+
+    self.warningLabelWrapper.layer.backgroundColor = NSColor.systemOrangeColor.CGColor;
+    self.warningLabelWrapper.layer.cornerRadius = 8.0;
   }
 
   if (!self.window.isVisible) {
@@ -40,6 +50,7 @@
     [windowListManager reloadList];
     [tableView reloadData];
     [self moveCursorToRow:0];
+    [self updateWarningLabel];
     [self resizeWindow];
 
     [self.window makeKeyAndOrderFront:nil];
@@ -47,17 +58,32 @@
   }
 }
 
+- (void) updateWarningLabel {
+  if (windowListManager.error) {
+    self.warningLabelWrapper.hidden = NO;
+    self.warningLabel.stringValue = [@"⚠️ " stringByAppendingString: windowListManager.error.localizedDescription];
+    self.scrollViewToTopConstraint.active = NO;
+  } else {
+    self.warningLabelWrapper.hidden = YES;
+    self.scrollViewToTopConstraint.active = YES;
+  }
+}
+
 - (void) resizeWindow {
   NSScreen *screen = [NSScreen mainScreen];
-  CGFloat maxWidth = MIN(1000, screen.frame.size.width - 50);
-  CGFloat maxHeight = MIN(800, screen.frame.size.height - 50);
+  CGFloat maxWidth = MIN(WindowMaxWidth, screen.frame.size.width - WindowScreenXMargin);
+  CGFloat maxHeight = MIN(WindowMaxHeight, screen.frame.size.height - WindowScreenYMargin);
 
   NSRect lastRow = [tableView rectOfRow:(tableView.numberOfRows - 1)];
   CGFloat contentHeight = lastRow.origin.y + lastRow.size.height;
 
   NSRect frame = self.window.frame;
   frame.size.width = maxWidth;
-  frame.size.height = MIN(contentHeight + 40, maxHeight);
+  frame.size.height = MIN(contentHeight + 2 * TableViewPadding, maxHeight);
+
+  if (!self.warningLabelWrapper.hidden) {
+    frame.size.height += WarningLabelMargin + self.warningLabelWrapper.frame.size.height;
+  }
 
   [self.window setFrame:frame display:YES];
   [self.window center];

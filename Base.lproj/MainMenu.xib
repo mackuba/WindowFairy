@@ -655,13 +655,11 @@
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <customView id="561" userLabel="Content View">
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="561" userLabel="Content View">
             <rect key="frame" x="0.0" y="0.0" width="652" height="344"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="27" horizontalPageScroll="10" verticalLineScroll="27" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="533">
+                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="27" horizontalPageScroll="10" verticalLineScroll="27" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="533">
                     <rect key="frame" x="20" y="20" width="612" height="304"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="QCi-ib-Hgs">
                         <rect key="frame" x="0.0" y="0.0" width="612" height="304"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -722,13 +720,44 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <customView hidden="YES" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sbe-Ra-MNV">
+                    <rect key="frame" x="267" y="295" width="118" height="29"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NH3-2b-jgh">
+                            <rect key="frame" x="3" y="5" width="112" height="19"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Warning Label" id="b0y-nZ-kgR">
+                                <font key="font" metaFont="system" size="16"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="NH3-2b-jgh" secondAttribute="bottom" constant="5" id="C1u-US-gNB"/>
+                        <constraint firstItem="NH3-2b-jgh" firstAttribute="top" secondItem="Sbe-Ra-MNV" secondAttribute="top" constant="5" id="GXh-4l-gNH"/>
+                        <constraint firstAttribute="trailing" secondItem="NH3-2b-jgh" secondAttribute="trailing" constant="5" id="Y3S-jv-Cxf"/>
+                        <constraint firstItem="NH3-2b-jgh" firstAttribute="leading" secondItem="Sbe-Ra-MNV" secondAttribute="leading" constant="5" id="lwh-It-Tav"/>
+                    </constraints>
+                </customView>
             </subviews>
+            <constraints>
+                <constraint firstItem="533" firstAttribute="leading" secondItem="561" secondAttribute="leading" constant="20" symbolic="YES" id="GiX-nv-Va8"/>
+                <constraint firstAttribute="bottom" secondItem="533" secondAttribute="bottom" constant="20" symbolic="YES" id="HXH-oV-5fv"/>
+                <constraint firstItem="Sbe-Ra-MNV" firstAttribute="centerX" secondItem="561" secondAttribute="centerX" id="IMT-lP-HDL"/>
+                <constraint firstItem="533" firstAttribute="top" secondItem="561" secondAttribute="top" constant="20" symbolic="YES" id="XU3-Sj-a38"/>
+                <constraint firstItem="Sbe-Ra-MNV" firstAttribute="top" secondItem="561" secondAttribute="top" constant="20" id="aBN-4f-GOG"/>
+                <constraint firstItem="533" firstAttribute="top" secondItem="Sbe-Ra-MNV" secondAttribute="bottom" priority="250" constant="20" id="fBa-CR-5QT"/>
+                <constraint firstAttribute="trailing" secondItem="533" secondAttribute="trailing" constant="20" symbolic="YES" id="lIz-3z-DQP"/>
+            </constraints>
             <point key="canvasLocation" x="139" y="-94"/>
         </customView>
         <customObject id="Nmq-An-fUz" customClass="SelectionWindowController">
             <connections>
                 <outlet property="contentView" destination="561" id="8Z9-Rh-yid"/>
+                <outlet property="scrollViewToTopConstraint" destination="XU3-Sj-a38" id="lpF-ck-RsH"/>
                 <outlet property="tableView" destination="536" id="nTn-ut-CCT"/>
+                <outlet property="warningLabel" destination="NH3-2b-jgh" id="A8z-0B-h2i"/>
+                <outlet property="warningLabelWrapper" destination="Sbe-Ra-MNV" id="1uJ-y4-a1y"/>
             </connections>
         </customObject>
     </objects>

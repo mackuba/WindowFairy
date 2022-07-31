@@ -7,6 +7,10 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSErrorDomain const WindowListErrorDomain;
+extern NSInteger const AccessibilityAccessError;
+extern NSInteger const ScreenRecordingAccessError;
+
 @interface WindowListManager : NSObject
 
 - (void) reloadList;
@@ -14,5 +18,6 @@
 - (Window *) windowAtIndex: (NSInteger) index;
 
 @property (readonly) NSInteger windowCount;
+@property (copy) NSError *error;
 
 @end

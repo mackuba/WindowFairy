@@ -9,6 +9,10 @@
 #import "WindowCGInfo.h"
 #import "WindowListManager.h"
 
+NSErrorDomain const WindowListErrorDomain = @"WindowListErrorDomain";
+NSInteger const AccessibilityAccessError = 1;
+NSInteger const ScreenRecordingAccessError = 2;
+
 @interface WindowListManager () {
   NSArray *windowList;
 }
@@ -18,6 +22,16 @@
 @implementation WindowListManager
 
 - (void) reloadList {
+  self.error = nil;
+
+  if (!AXIsProcessTrusted()) {
+    self.error = [NSError errorWithDomain:WindowListErrorDomain
+                                     code:AccessibilityAccessError
+                                 userInfo:@{
+                                   NSLocalizedDescriptionKey: @"Accessibility permission needs to be enabled for this app"
+                                 }];
+  }
+
   // collect the data we will need
   NSDictionary *pidToApplicationMap = [self getPIDToApplicationMap];
   NSArray *cgWindowList = [self getCGWindowList];
@@ -92,12 +106,12 @@
     }
   }
 
-  if (!namesFound) {
-    NSRunAlertPanel(@"Error",
-                    @"Screen recording access needs to be enabled for this app in System Preferences.",
-                    @"OK",
-                    nil,
-                    nil);
+  if (!namesFound && !self.error) {
+    self.error = [NSError errorWithDomain:WindowListErrorDomain
+                                     code:ScreenRecordingAccessError
+                                 userInfo:@{
+                                   NSLocalizedDescriptionKey: @"Screen recording access needs to be enabled for this app"
+                                 }];
   }
 
   return windows;
@@ -150,11 +164,7 @@
     CFRelease(applicationWindows);
     return CFBridgingRelease(visibleWindows);
   } else if (result == kAXErrorAPIDisabled) {
-    NSRunAlertPanel(@"Error",
-                    @"Accessibility access needs to be enabled for this app in System Preferences.",
-                    @"OK",
-                    nil,
-                    nil);
+    NSLog(@"Error loading application windows: kAXErrorAPIDisabled");
     return nil;
   } else {
     NSLog(@"Error loading application windows: %d", result);
