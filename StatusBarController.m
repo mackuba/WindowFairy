@@ -5,6 +5,7 @@
 // Licensed under WTFPL license
 // -------------------------------------------------------
 
+#import "WindowFairyAppDelegate.h"
 #import "StatusBarController.h"
 
 @implementation StatusBarController {
@@ -23,16 +24,22 @@
 - (NSMenu *) createMenu {
   NSMenu *menu = [[NSMenu alloc] initWithTitle:@"WindowFairy"];
 
+  NSMenuItem *showWindow = [[NSMenuItem alloc] init];
+  showWindow.title = @"Show Window List";
+  showWindow.action = @selector(showMainWindow);
+  showWindow.target = [NSApp delegate];
+  [menu addItem:showWindow];
+
   NSMenuItem *quit = [[NSMenuItem alloc] init];
   quit.title = @"Quit WindowFairy";
-  quit.action = @selector(quit:);
+  quit.action = @selector(quit);
   quit.target = self;
   [menu addItem:quit];
 
   return menu;
 }
 
-- (void) quit:(id)sender {
+- (void) quit {
   [NSApp terminate:self];
 }
 

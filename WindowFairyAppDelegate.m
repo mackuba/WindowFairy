@@ -69,4 +69,8 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
   [windowController moveCursorDown];
 }
 
+- (void) showMainWindow {
+  [windowController showSelectionWindowPermanent];
+}
+
 @end

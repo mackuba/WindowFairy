@@ -13,5 +13,6 @@
 - (id) initWithView: (NSView *) view;
 
 @property (weak) id<SelectionWindowDelegate> selectionDelegate;
+@property (getter=isTransient) BOOL transient;
 
 @end

@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (IBAction) showSystemPreferencesPanel:(id)sender;
 - (void) showSelectionWindow;
+- (void) showSelectionWindowPermanent;
 
 @end
 

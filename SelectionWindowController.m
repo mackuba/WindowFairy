@@ -55,7 +55,13 @@ static NSInteger const WarningLabelMargin = 20;
 
     [self.window makeKeyAndOrderFront:nil];
     [self.window makeFirstResponder:contentView];
+    [(SelectionWindow *)self.window setTransient:YES];
   }
+}
+
+- (void) showSelectionWindowPermanent {
+  [self showSelectionWindow];
+  [(SelectionWindow *)self.window setTransient:NO];
 }
 
 - (void) updateWarningLabel {

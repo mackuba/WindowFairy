@@ -22,6 +22,8 @@
     [self setOpaque: NO];
     [self setContentView: view];
 
+    self.transient = YES;
+
     view.wantsLayer = YES;
     view.layer.backgroundColor = [[NSColor colorWithDeviceRed: 0 green: 0 blue: 0 alpha: 0.7] CGColor];
     view.layer.cornerRadius = 15.0;
@@ -43,11 +45,13 @@
 
   // TODO: handle press-and-hold
 
-  if (modifierFlags & NSEventModifierFlagOption) {
+  if (modifierFlags & NSEventModifierFlagOption || !self.transient) {
     switch (keyCode) {
       case 48: // tab
         if (modifierFlags & NSEventModifierFlagShift) {
           [selectionDelegate moveCursorUp];
+        } else {
+          [selectionDelegate moveCursorDown];
         }
         return;
       case 53: // esc
@@ -67,17 +71,16 @@
       default:
         return;
     }
-  } else {
-    // alt was released - theoretically this shouldn't happen (we should get flagsChanged first)
-    [selectionDelegate performSwitch];
   }
 }
 
 - (void) flagsChanged: (NSEvent *) event {
-  NSUInteger modifierFlags = [event modifierFlags];
-  if (!(modifierFlags & NSEventModifierFlagOption)) {
-    // alt released
-    [selectionDelegate performSwitch];
+  if (self.transient) {
+    NSUInteger modifierFlags = [event modifierFlags];
+    if (!(modifierFlags & NSEventModifierFlagOption)) {
+      // alt released
+      [selectionDelegate performSwitch];
+    }
   }
 }
 

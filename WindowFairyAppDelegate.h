@@ -12,6 +12,7 @@
 @interface WindowFairyAppDelegate : NSObject <NSApplicationDelegate>
 
 - (void) hotKeyActivated;
+- (void) showMainWindow;
 
 @property IBOutlet SelectionWindowController *windowController;
 
