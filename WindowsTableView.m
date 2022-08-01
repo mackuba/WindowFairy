@@ -22,4 +22,8 @@
   [super drawRow:rowIndex clipRect:clipRect];
 }
 
+- (BOOL)acceptsFirstResponder {
+  return NO;
+}
+
 @end
