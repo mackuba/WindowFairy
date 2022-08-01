@@ -7,8 +7,10 @@
 
 @protocol SelectionWindowDelegate
 
-- (void) moveCursorDown;
 - (void) moveCursorUp;
+- (void) moveCursorDown;
+- (void) moveCursorToBeginning;
+- (void) moveCursorToEnd;
 - (void) performSwitch;
 - (void) closeWithoutSwitching;
 

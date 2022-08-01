@@ -156,6 +156,18 @@ static NSInteger const WarningLabelMargin = 20;
   [self moveCursorToRow: currentRow];
 }
 
+- (void) moveCursorToBeginning {
+  if (windowListManager.windowCount == 0) { return; }
+
+  [self moveCursorToRow: 0];
+}
+
+- (void) moveCursorToEnd {
+  if (windowListManager.windowCount == 0) { return; }
+
+  [self moveCursorToRow: (windowListManager.windowCount - 1)];
+}
+
 - (void) performSwitch {
   NSInteger row = [tableView selectedRow];
 

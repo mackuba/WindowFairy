@@ -62,11 +62,19 @@
         return;
       case 123: // left arrow
       case 126: // up arrow
-        [selectionDelegate moveCursorUp];
+        if (modifierFlags & NSEventModifierFlagControl) {
+          [selectionDelegate moveCursorToBeginning];
+        } else {
+          [selectionDelegate moveCursorUp];
+        }
         return;
       case 125: // down arrow
       case 124: // right arrow
-        [selectionDelegate moveCursorDown];
+        if (modifierFlags & NSEventModifierFlagControl) {
+          [selectionDelegate moveCursorToEnd];
+        } else {
+          [selectionDelegate moveCursorDown];
+        }
         return;
       default:
         return;
