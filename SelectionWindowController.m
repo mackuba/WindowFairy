@@ -111,7 +111,7 @@ static NSInteger const WarningLabelMargin = 20;
   }
 }
 
-#pragma mark - NSTableViewDataSource
+#pragma mark - Table view support
 
 - (NSInteger) numberOfRowsInTableView: (NSTableView *) view {
   return windowListManager.windowCount;
@@ -129,6 +129,14 @@ static NSInteger const WarningLabelMargin = 20;
     return windowRecord.application.localizedName;
   } else {
     return windowRecord.name;
+  }
+}
+
+- (IBAction) rowDoubleClicked:(id)sender {
+  NSInteger currentRow = tableView.clickedRow;
+  if (currentRow > -1) {
+    [windowListManager switchToWindowAtIndex:currentRow];
+    [self.window close];
   }
 }
 
@@ -172,7 +180,7 @@ static NSInteger const WarningLabelMargin = 20;
   NSInteger row = [tableView selectedRow];
 
   if (row > -1) {
-    [windowListManager switchToWindowAtIndex: MAX(row, 0)];
+    [windowListManager switchToWindowAtIndex: row];
   }
 
   [self.window close];

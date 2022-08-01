@@ -705,6 +705,7 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
+                                    <action trigger="doubleAction" selector="rowDoubleClicked:" target="Nmq-An-fUz" id="ZBd-cM-ceK"/>
                                     <outlet property="dataSource" destination="Nmq-An-fUz" id="fGD-It-cUA"/>
                                 </connections>
                             </tableView>
