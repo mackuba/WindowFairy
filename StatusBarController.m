@@ -6,6 +6,7 @@
 // -------------------------------------------------------
 
 #import "WindowFairyAppDelegate.h"
+#import "LoginItemController.h"
 #import "StatusBarController.h"
 
 @implementation StatusBarController {
@@ -23,6 +24,15 @@
 
 - (NSMenu *) createMenu {
   NSMenu *menu = [[NSMenu alloc] initWithTitle:@"WindowFairy"];
+
+  NSMenuItem *runAtLogin = [[NSMenuItem alloc] init];
+  [runAtLogin setTitle:@"Launch at Login"];
+  [runAtLogin bind:@"value"
+          toObject:[LoginItemController sharedController]
+       withKeyPath:@"loginItemEnabled"
+           options:nil];
+
+  [menu addItem:runAtLogin];
 
   NSMenuItem *showWindow = [[NSMenuItem alloc] init];
   showWindow.title = @"Show Window List";
