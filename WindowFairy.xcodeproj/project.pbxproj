@@ -15,6 +15,7 @@
 		58DDA9BE108B302B0056A27F /* WindowListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DDA9BD108B302B0056A27F /* WindowListManager.m */; };
 		58F6D2C028957FF70068427F /* WindowCGInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F6D2BD28957E2D0068427F /* WindowCGInfo.m */; };
 		8C9161A82897410700C80F07 /* WindowsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9161A72897410700C80F07 /* WindowsTableView.m */; };
+		8C9161AC2898204B00C80F07 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9161AB2898204B00C80F07 /* StatusBarController.m */; };
 		8CC024AC2895CE5C002B9A43 /* SelectionWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC024AA2895CE5C002B9A43 /* SelectionWindowController.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -43,6 +44,8 @@
 		8C0E3A7D2895979C00FFE56B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8C9161A62897410700C80F07 /* WindowsTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowsTableView.h; sourceTree = "<group>"; };
 		8C9161A72897410700C80F07 /* WindowsTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowsTableView.m; sourceTree = "<group>"; };
+		8C9161AA2898204B00C80F07 /* StatusBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusBarController.h; sourceTree = "<group>"; };
+		8C9161AB2898204B00C80F07 /* StatusBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusBarController.m; sourceTree = "<group>"; };
 		8CC024A92895CE5C002B9A43 /* SelectionWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectionWindowController.h; sourceTree = "<group>"; };
 		8CC024AA2895CE5C002B9A43 /* SelectionWindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectionWindowController.m; sourceTree = "<group>"; };
 		8CC024B52895D16A002B9A43 /* SelectionWindowDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectionWindowDelegate.h; sourceTree = "<group>"; };
@@ -71,6 +74,8 @@
 				8CC024A92895CE5C002B9A43 /* SelectionWindowController.h */,
 				8CC024AA2895CE5C002B9A43 /* SelectionWindowController.m */,
 				8CC024B52895D16A002B9A43 /* SelectionWindowDelegate.h */,
+				8C9161AA2898204B00C80F07 /* StatusBarController.h */,
+				8C9161AB2898204B00C80F07 /* StatusBarController.m */,
 				58DDA9B6108B301A0056A27F /* Window.h */,
 				58DDA9B7108B301A0056A27F /* Window.m */,
 				58F6D2BF28957E390068427F /* WindowCGInfo.h */,
@@ -227,6 +232,7 @@
 				8C9161A82897410700C80F07 /* WindowsTableView.m in Sources */,
 				8CC024AC2895CE5C002B9A43 /* SelectionWindowController.m in Sources */,
 				58DDA9B8108B301A0056A27F /* Window.m in Sources */,
+				8C9161AC2898204B00C80F07 /* StatusBarController.m in Sources */,
 				58DDA9BE108B302B0056A27F /* WindowListManager.m in Sources */,
 				58058EFD10922C370092962A /* SelectionWindow.m in Sources */,
 			);

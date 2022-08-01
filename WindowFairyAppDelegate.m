@@ -9,6 +9,7 @@
 #import <Carbon/Carbon.h>
 
 #import "SelectionWindowController.h"
+#import "StatusBarController.h"
 #import "WindowFairyAppDelegate.h"
 
 UInt32 const ShowWindowHotkeyID = 1;
@@ -24,13 +25,18 @@ OSStatus keyboardHandler(EventHandlerCallRef nextHandler, EventRef event, void *
 }
 
 
-@implementation WindowFairyAppDelegate
+@implementation WindowFairyAppDelegate {
+  StatusBarController *statusBarController;
+}
 
 @synthesize windowController;
 
 - (void) awakeFromNib {
   [self installGlobalHotKey];
   [self requestAccessibilityPermission];
+
+  statusBarController = [[StatusBarController alloc] init];
+  [statusBarController createStatusBarItem];
 }
 
 - (void) requestAccessibilityPermission {
